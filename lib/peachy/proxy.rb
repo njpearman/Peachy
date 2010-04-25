@@ -26,19 +26,25 @@ module Peachy
       check_for_convention(method_name_as_string)
       matches = find_matches(method_name_as_string)
       if(matches[0].xpath('*[not(*)]').size > 0)
-        child_proxy = Proxy.new(matches[0])
-        (class << self; self; end).class_eval do
-          define_method(method_name) { return child_proxy }
-        end
-        return child_proxy
+        create_child_proxy method_name, matches
       else
-        node_content = matches[0].content
-        define_method method_name, node_content
-        return node_content
+        create_content method_name, matches
       end
     end
 
     private
+    def create_content method_name, matches
+      node_content = matches[0].content
+      define_method(method_name) { return node_content }
+      return node_content
+    end
+
+    def create_child_proxy method_name, matches
+      child_proxy = Proxy.new(matches[0])
+      define_method(method_name) { return child_proxy }
+      return child_proxy
+    end
+
     # Runs the xpath for the method name against the underlying XML DOM, raising
     # a NoMatchingXmlPart if no element or attribute matching the method name is
     # found in the children of the current location in the DOM.
@@ -48,12 +54,11 @@ module Peachy
       return matches
     end
     
-    # i don't like this hacky way of getting hold of the eigenclass to define
-    # a method, but it's better than instance_eval'ing a string def of the
-    # method.
-    def define_method method_name, node_content
+    # I don't like this hacky way of getting hold of the eigenclass to define
+    # a method, but it's better than instance_eval'ing a string to def a method.
+    def define_method method_name, &block
       (class << self; self; end).class_eval do
-        define_method(method_name) { return node_content }
+        define_method method_name, &block
       end
     end
 
