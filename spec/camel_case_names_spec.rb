@@ -16,5 +16,10 @@ describe "interpretting element and attribute names that are defined camel case"
   it "should match a method to an attribute by camel case" do
     @proxy.root.second_node.record_label.should == "Wall of Sound"
   end
+
+  it "should define a method from camel cased attribute name" do
+    @proxy.root.second_node.record_label
+    @proxy.root.second_node.methods.should include 'record_label'
+  end
 end
 

@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'nokogiri'
-require 'ruby-debug'
 
 module Peachy
   class Proxy
@@ -47,7 +46,6 @@ module Peachy
 
     private
     def create_from_element method_name, match
-      #debugger
       return create_child_proxy(method_name, match) if there_are_child_nodes(match)
       return create_child_proxy_with_attributes(method_name, match) if node_has_attributes(match)
       return create_content(method_name, match)

@@ -8,6 +8,5 @@ module Peachy
     def as_hyphen_separated method_name
       method_name.gsub(/_/, '-')
     end
-
   end
 end
