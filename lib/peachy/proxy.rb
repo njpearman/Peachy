@@ -7,6 +7,8 @@ module Peachy
     methods_to_hide.delete('methods')
     private *methods_to_hide
     alias_method :original_method_missing, :method_missing
+
+    include ChecksConvention, StringStyler
     
     def initialize nokogiri_node
       @nokogiri_node = nokogiri_node
@@ -93,22 +95,6 @@ module Peachy
 
     def xpath_for method_name
       "./#{method_name}|./#{as_camel_case(method_name)}|./#{as_hyphen_separated(method_name)}"
-    end
-    
-    def as_camel_case method_name
-      method_name.capitalize.gsub(/_([a-z])/){|s| s.upcase}.delete('_')
-    end
-
-    def as_hyphen_separated method_name
-      method_name.gsub(/_/, '-')
-    end
-    
-    def check_for_convention method_name
-      raise MethodNotInRubyConvention.new(method_name) unless matches_convention(method_name)
-    end
-
-    def matches_convention method_name
-      method_name =~ /^[a-z]+(?:_[a-z]+)?{0,}$/
     end
   end
 end
