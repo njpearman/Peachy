@@ -35,13 +35,17 @@ module Peachy
       create_method_for_child_or_content method_name
     end
 
-    private
     def create_method_for_child_or_content method_name
       matches = find_matches(method_name.to_s)
       first_match = matches[0]
-      return create_child_proxy(method_name, first_match) if there_are_no_child_nodes(first_match)
-      return create_child_proxy_with_attributes(method_name, first_match) if node_has_attributes(first_match)
-      return create_content(method_name, first_match)
+      create_from_element method_name, first_match
+    end
+
+    private
+    def create_from_element method_name, match
+      return create_child_proxy(method_name, match) if there_are_no_child_nodes(match)
+      return create_child_proxy_with_attributes(method_name, match) if node_has_attributes(match)
+      return create_content(method_name, match)
     end
 
     def node_has_attributes match
