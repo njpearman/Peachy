@@ -1,4 +1,4 @@
-describe "inferring a method from a simple element" do
+describe "inferring a method from an element name" do
   before(:each) do
     @nokogiri_for_test = Nokogiri::XML('<testnode>Check meh.</testnode>')
     @proxy = Peachy::Proxy.new @nokogiri_for_test
@@ -37,5 +37,14 @@ describe "inferring a method from a simple element" do
     contents_after_defined = @proxy.testnode
     contents_after_defined.should == 'Check meh.'
     contents_after_defined.should == contents_when_not_defined
+  end
+
+  it "should only contain the expected public and protected methods" do
+    method_count_with_rspec_methods = 15
+    puts @proxy.methods.sort
+    @proxy.methods.size.should == method_count_with_rspec_methods
+    @proxy.methods.should include('methods')
+    @proxy.methods.should include('generate_method_for_xml')
+    @proxy.methods.should_not include('id')
   end
 end

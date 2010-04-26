@@ -3,6 +3,9 @@ require 'nokogiri'
 
 module Peachy
   class Proxy
+    methods_to_hide = public_instance_methods.clone
+    methods_to_hide.delete('methods')
+    private *methods_to_hide
     alias_method :original_method_missing, :method_missing
     
     def initialize nokogiri_node
@@ -22,21 +25,48 @@ module Peachy
     # implementation of method_missing
     def method_missing method_name, *args, &block
       original_method_missing method_name, args, &block if args.any? or block_given?
+      generate_method_for_xml method_name
+    end
+
+    protected
+    def generate_method_for_xml method_name
       method_name_as_string = method_name.to_s
       check_for_convention(method_name_as_string)
-      matches = find_matches(method_name_as_string)
-      if(matches[0].xpath('*[not(*)]').size > 0)
-        create_child_proxy method_name, matches
-      else
-        create_content method_name, matches
-      end
+      #check for attributes
+#      matches = @nokogiri_node.xpath(".[@#{method_name}]")
+#      if(matches.size > 0)
+#        return create_content method_name, matches
+#      end
+
+      create_method_for_child_or_content method_name
     end
 
     private
+    def create_method_for_child_or_content method_name
+      matches = find_matches(method_name.to_s)
+      return create_child_proxy(method_name, matches) if there_are_no_child_nodes(matches)
+      return create_child_proxy_with_attributes(method_name, matches) if node_has_attributes(matches)
+      return create_content(method_name, matches)
+    end
+
+    def node_has_attributes matches
+      matches[0].attribute_nodes.size > 0
+    end
+
+    def there_are_no_child_nodes matches
+      matches[0].xpath('*[not(*)]').size > 0
+    end
+
     def create_content method_name, matches
       node_content = matches[0].content
       define_method(method_name) { return node_content }
       return node_content
+    end
+
+    def create_child_proxy_with_attributes method_name, matches
+      child_proxy = ProxyWithAttributes.new(matches[0])
+      define_method(method_name) { return child_proxy }
+      return child_proxy
     end
 
     def create_child_proxy method_name, matches
