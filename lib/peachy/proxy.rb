@@ -1,14 +1,16 @@
 require 'rubygems'
 require 'nokogiri'
+require 'ruby-debug'
 
 module Peachy
   class Proxy
     methods_to_hide = public_instance_methods.clone
     methods_to_hide.delete('methods')
+    methods_to_hide.delete('respond_to?')
     private *methods_to_hide
     alias_method :original_method_missing, :method_missing
 
-    include ChecksConvention, StringStyler
+    include ConventionChecks, StringStyler
     
     def initialize nokogiri_node
       @nokogiri_node = nokogiri_node
@@ -45,7 +47,8 @@ module Peachy
 
     private
     def create_from_element method_name, match
-      return create_child_proxy(method_name, match) if there_are_no_child_nodes(match)
+      #debugger
+      return create_child_proxy(method_name, match) if there_are_child_nodes(match)
       return create_child_proxy_with_attributes(method_name, match) if node_has_attributes(match)
       return create_content(method_name, match)
     end
@@ -54,8 +57,8 @@ module Peachy
       match.attribute_nodes.size > 0
     end
 
-    def there_are_no_child_nodes match
-      match.xpath('*[not(*)]').size > 0
+    def there_are_child_nodes match
+      match.xpath('./*').size > 0
     end
 
     def create_content method_name, match

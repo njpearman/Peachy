@@ -40,10 +40,11 @@ describe "inferring a method from an element name" do
   end
 
   it "should only contain the expected public and protected methods" do
-    method_count_with_rspec_methods = 16
+    method_count_with_rspec_methods = 17
     puts @proxy.methods.sort
     @proxy.methods.size.should == method_count_with_rspec_methods
     @proxy.methods.should include('methods')
+    @proxy.methods.should include('respond_to?')
     @proxy.methods.should include('generate_method_for_xml')
     @proxy.methods.should include('create_method_for_child_or_content')
     @proxy.methods.should_not include('id')
