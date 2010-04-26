@@ -2,10 +2,6 @@ require File.expand_path(File.join(File.dirname(__FILE__), '../lib/method_not_in
 require File.expand_path(File.join(File.dirname(__FILE__), '../lib/no_matching_xml_part'))
 require File.expand_path(File.join(File.dirname(__FILE__), '../lib/peachy/proxy'))
 require File.expand_path(File.join(File.dirname(__FILE__), '../lib/peachy/proxy_with_attributes'))
-require 'requirements_loader'
-
-#lib_directory = File.join(File.dirname(__FILE__), '../lib')
-#RequirementsLoader.require_all_from(lib_directory)
 
 Spec::Runner.configure do |config|
   # these aren't the droids you're looking for....
