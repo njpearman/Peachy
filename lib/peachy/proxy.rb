@@ -55,7 +55,7 @@ module Peachy
       method_name_as_string = method_name.to_s
       check_for_convention(method_name_as_string)
 
-      if nokogiri_node.children.size > 0
+      if there_are_child_nodes?(nokogiri_node) and node_has_attributes?( nokogiri_node)
         match = nokogiri_node.attribute(method_name_as_string)
         return create_content_child(method_name_as_string, match) unless match.nil?
       end
@@ -93,17 +93,20 @@ module Peachy
     end
 
     def create_from_element method_name, match
-      return create_child_proxy(method_name, match) if there_are_child_nodes(match)
-      return create_child_proxy_with_attributes(method_name, match) if node_has_attributes(match)
+      return create_child_proxy(method_name, match) if there_are_child_nodes?(match)
+      return create_child_proxy_with_attributes(method_name, match) if node_has_attributes?(match)
       return create_content_child(method_name, match)
     end
 
-    def node_has_attributes match
+    def node_has_attributes? match
       match.attribute_nodes.size > 0
     end
 
-    def there_are_child_nodes match
-      match.xpath('./*').size > 0
+    # Determines whether the given element contains any child elements or not.
+    # The choice of implementation is based on performance tests between using
+    # XPath and a Ruby iterator.
+    def there_are_child_nodes? match
+      match.children.any? {|child| child.kind_of? Nokogiri::XML::Element}
     end
 
     def create_content_child method_name, match
