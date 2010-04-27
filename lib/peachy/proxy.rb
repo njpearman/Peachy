@@ -55,21 +55,10 @@ module Peachy
       method_name_as_string = method_name.to_s
       check_for_convention(method_name_as_string)
 
-      if there_are_child_nodes?(nokogiri_node) and node_has_attributes?( nokogiri_node)
-        match = nokogiri_node.attribute(method_name_as_string)
-        return create_content_child(method_name_as_string, match) unless match.nil?
-      end
+      attribute_content = create_from_parent_with_attribute method_name_as_string, nokogiri_node
+      return attribute_content unless attribute_content.nil?
       
       create_method_for_child_or_content method_name
-    end
-
-    def create_method_for_child_or_content method_name
-      matches = find_matches(method_name.to_s)
-      if matches.size > 1
-        create_from_element_list method_name, matches
-      else
-        create_from_element method_name, matches[0]
-      end
     end
 
     private
@@ -80,6 +69,12 @@ module Peachy
 
     def variables_are_nil?
       @xml.nil? and @nokogiri_node.nil?
+    end
+
+    def create_method_for_child_or_content method_name
+      matches = find_matches(method_name.to_s)
+      return create_from_element_list method_name, matches if matches.size > 1
+      return create_from_element method_name, matches[0]
     end
 
     # Runs the xpath for the method name against the underlying XML DOM, raising
@@ -93,6 +88,13 @@ module Peachy
 
     def xpath_for method_name
       "./#{method_name}|./#{as_camel_case(method_name)}|./#{as_hyphen_separated(method_name)}"
+    end
+
+    def create_from_parent_with_attribute method_name, node
+      if there_are_child_nodes?(node) and node_has_attributes?(node)
+        match = node.attribute(method_name)
+        return create_content_child(method_name, match) unless match.nil?
+      end
     end
 
     def create_from_element_list  method_name, matches
