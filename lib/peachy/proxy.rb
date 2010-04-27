@@ -60,21 +60,19 @@ module Peachy
     end
 
     def create_content method_name, match
-      node_content = match.content
-      define_method(method_name) { return node_content }
-      return node_content
+      return create_child(method_name, match.content)
     end
 
     def create_child_proxy_with_attributes method_name, match
-      child_proxy = ProxyWithAttributes.new(match)
-      define_method(method_name) { return child_proxy }
-      return child_proxy
+      return create_child(method_name, ProxyWithAttributes.new(match))
     end
 
     def create_child_proxy method_name, match
-      child_proxy = Proxy.new(match)
-      define_method(method_name) { return child_proxy }
-      return child_proxy
+      return create_child(method_name, Proxy.new(match))
+    end
+
+    def create_child method_name, return_value
+      return define_method(method_name) { return return_value }
     end
 
     # Runs the xpath for the method name against the underlying XML DOM, raising
@@ -89,9 +87,14 @@ module Peachy
     # I don't like this hacky way of getting hold of the eigenclass to define
     # a method, but it's better than instance_eval'ing a string to def a method.
     def define_method method_name, &block
-      (class << self; self; end).class_eval do
+      get_my_singleton_class.class_eval do
         define_method method_name, &block
       end
+      yield
+    end
+
+    def get_my_singleton_class
+      (class << self; self; end)
     end
 
     def xpath_for method_name
