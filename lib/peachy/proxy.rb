@@ -50,7 +50,7 @@ module Peachy
       generate_method_for_xml method_name
     end
 
-    protected
+    private
     def generate_method_for_xml method_name
       method_name_as_string = method_name.to_s
       check_for_convention(method_name_as_string)
@@ -61,7 +61,6 @@ module Peachy
       create_method_for_child_or_content method_name
     end
 
-    private
     def nokogiri_node
       raise InvalidProxyParameters.new(:xml => nil, :nokogiri => nil) if variables_are_nil?
       @nokogiri_node ||= Nokogiri::XML(@xml)
