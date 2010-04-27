@@ -66,12 +66,9 @@ module Peachy
     def create_method_for_child_or_content method_name
       matches = find_matches(method_name.to_s)
       if matches.size > 1
-        items = []
-        matches.each {|child| items << child.content }
-        create_child(method_name, items)
+        create_from_element_list method_name, matches
       else
-        first_match = matches[0]
-        create_from_element method_name, first_match
+        create_from_element method_name, matches[0]
       end
     end
 
@@ -96,6 +93,12 @@ module Peachy
 
     def xpath_for method_name
       "./#{method_name}|./#{as_camel_case(method_name)}|./#{as_hyphen_separated(method_name)}"
+    end
+
+    def create_from_element_list  method_name, matches
+        items = []
+        matches.each {|child| items << child.content }
+        create_child(method_name, items)
     end
 
     def create_from_element method_name, match
