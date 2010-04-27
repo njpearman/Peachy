@@ -1,4 +1,4 @@
-describe "a collection in XML should be interpretted as an array" do
+describe "a simple XML collection should be interpretted as an array" do
   before(:each) do
     xml = "<xml><stuff><item>first</item><item>second</item><item>third</item></xml>"
     @peachy_proxy = Peachy::Proxy.new :xml => xml
