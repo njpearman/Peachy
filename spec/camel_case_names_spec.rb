@@ -1,7 +1,6 @@
 describe "interpretting element and attribute names that are defined camel case" do
   before(:each) do
-    @nokogiri_for_test = Nokogiri::XML('<root><TestNode>Check meh.</TestNode><SecondNode id="2" RecordLabel="Wall of Sound">Check meh, too.</SecondNode></root>')
-    @proxy = Peachy::Proxy.new @nokogiri_for_test
+    @proxy = Peachy::Proxy.new :xml => '<root><TestNode>Check meh.</TestNode><SecondNode id="2" RecordLabel="Wall of Sound">Check meh, too.</SecondNode></root>'
   end
 
   it "should match a method to an element by camel case" do

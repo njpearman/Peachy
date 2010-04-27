@@ -1,7 +1,8 @@
 describe "inferring a method from an element name" do
   before(:each) do
-    @nokogiri_for_test = Nokogiri::XML('<testnode>Check meh.</testnode>')
-    @proxy = Peachy::Proxy.new @nokogiri_for_test
+    xml = '<testnode>Check meh.</testnode>'
+    @proxy = Peachy::Proxy.new :xml => xml
+    @another_proxy = Peachy::Proxy.new :xml => xml
   end
 
   it "should defer method_missing to the base class implementation if arguments are passed with the missing method" do
@@ -22,7 +23,6 @@ describe "inferring a method from an element name" do
   end
 
   it 'should define the method on an instance, not on the class' do
-    @another_proxy = Peachy::Proxy.new @nokogiri_for_test
     @proxy.testnode
     @proxy.methods.include?('testnode').should be_true
     @another_proxy.methods.include?('testnode').should be_false

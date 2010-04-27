@@ -16,9 +16,17 @@ module Peachy
     hide_public_methods
 
     include ConventionChecks, StringStyler
-    
-    def initialize nokogiri_node
-      @nokogiri_node = nokogiri_node
+
+    # Takes a hash as an argument.  Valied keys are:
+    #   :xml -
+    #       used to pass raw XML into the Proxy, and the XML parser will be
+    #       created on the fly.
+    #   :nokogiri -
+    #       can be used to pass in a Nokogiri::XML instance, if one has
+    #       already been created.
+    def initialize arguments
+      @nokogiri_node = arguments[:nokogiri]
+      @xml = arguments[:xml]
     end
 
     # Overloaded so that calls to methods representative of an XML element or
@@ -48,8 +56,8 @@ module Peachy
       method_name_as_string = method_name.to_s
       check_for_convention(method_name_as_string)
 
-      if @nokogiri_node.children.size > 0
-        match = @nokogiri_node.attribute(method_name_as_string)
+      if nokogiri_node.children.size > 0
+        match = nokogiri_node.attribute(method_name_as_string)
         return create_content_child(method_name_as_string, match) unless match.nil?
       end
       
@@ -63,11 +71,16 @@ module Peachy
     end
 
     private
+    def nokogiri_node
+      raise InvalidProxyParameters.new(:xml => nil, :nokogiri => nil) if @xml.nil? and @nokogiri_node.nil?
+      @nokogiri_node ||= Nokogiri::XML(@xml)
+    end
+
     # Runs the xpath for the method name against the underlying XML DOM, raising
     # a NoMatchingXmlPart if no element or attribute matching the method name is
     # found in the children of the current location in the DOM.
     def find_matches method_name
-      matches = @nokogiri_node.xpath(xpath_for(method_name))
+      matches = nokogiri_node.xpath(xpath_for(method_name))
       raise NoMatchingXmlPart.new(method_name) if matches.length < 1
       return matches
     end
@@ -95,11 +108,11 @@ module Peachy
     end
 
     def create_child_proxy method_name, match
-      return create_child(method_name, Proxy.new(match))
+      return create_child(method_name, Proxy.new(:nokogiri => match))
     end
 
     def create_child_proxy_with_attributes method_name, match
-      return create_child(method_name, ChildlessProxyWithAttributes.new(match))
+      return create_child(method_name, ChildlessProxyWithAttributes.new(:nokogiri => match))
     end
 
     def create_child method_name, return_value
