@@ -65,8 +65,14 @@ module Peachy
 
     def create_method_for_child_or_content method_name
       matches = find_matches(method_name.to_s)
-      first_match = matches[0]
-      create_from_element method_name, first_match
+      if matches.size > 1
+        items = []
+        matches.each {|child| items << child.content }
+        create_child(method_name, items)
+      else
+        first_match = matches[0]
+        create_from_element method_name, first_match
+      end
     end
 
     private
