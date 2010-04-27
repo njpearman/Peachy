@@ -17,7 +17,7 @@ module Peachy
 
     include ConventionChecks, StringStyler
 
-    # Takes a hash as an argument.  Valied keys are:
+    # Takes a hash as an argument.  Valid keys are:
     #   :xml -
     #       used to pass raw XML into the Proxy, and the XML parser will be
     #       created on the fly.
@@ -72,11 +72,11 @@ module Peachy
 
     private
     def nokogiri_node
-      raise InvalidProxyParameters.new(:xml => nil, :nokogiri => nil) if variables_are_invalid?
+      raise InvalidProxyParameters.new(:xml => nil, :nokogiri => nil) if variables_are_nil?
       @nokogiri_node ||= Nokogiri::XML(@xml)
     end
 
-    def variables_are_invalid?
+    def variables_are_nil?
       @xml.nil? and @nokogiri_node.nil?
     end
 
