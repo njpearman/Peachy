@@ -23,15 +23,21 @@ module Peachy
 
     # Overloaded so that calls to methods representative of an XML element or
     # attribute can be generated dynamically.
+    #
     # For example, if a proxy is referenced in code as proxy.first_node, and
     # first_node does match a child of the DOM encapsulated by proxy, then
     # first_node will be generated on proxy.
+    #
     # However, if first_node does not represent a child in the underlying DOM
     # then proxy will raise a NoMatchingXmlPart error.
+    #
     # The method name used to access an XML node has to follow the standard Ruby
-    # convention for method names, i.e. ^[a-z]+(?:_[a-z]+)?{0,}$
-    # Any calls that include arguments or a block will be deferred to the default
-    # implementation of method_missing
+    # convention for method names, i.e. ^[a-z]+(?:_[a-z]+)?{0,}$.  If an attempt
+    # is made to call a method on a Peachy::Proxy that breaks this convention,
+    # Peachy will simply raise a MethodNotInRubyConvention error.
+    #
+    # Any calls to undefined methods that include arguments or a block will be
+    # deferred to the default implementation of method_missing.
     def method_missing method_name, *args, &block
       original_method_missing method_name, args, &block if args.any? or block_given?
       generate_method_for_xml method_name
@@ -51,6 +57,19 @@ module Peachy
     end
 
     private
+    # Runs the xpath for the method name against the underlying XML DOM, raising
+    # a NoMatchingXmlPart if no element or attribute matching the method name is
+    # found in the children of the current location in the DOM.
+    def find_matches method_name
+      matches = @nokogiri_node.xpath(xpath_for(method_name))
+      raise NoMatchingXmlPart.new(method_name) if matches.length < 1
+      return matches
+    end
+
+    def xpath_for method_name
+      "./#{method_name}|./#{as_camel_case(method_name)}|./#{as_hyphen_separated(method_name)}"
+    end
+
     def create_from_element method_name, match
       return create_child_proxy(method_name, match) if there_are_child_nodes(match)
       return create_child_proxy_with_attributes(method_name, match) if node_has_attributes(match)
@@ -81,15 +100,6 @@ module Peachy
       return define_method(method_name) { return return_value }
     end
 
-    # Runs the xpath for the method name against the underlying XML DOM, raising
-    # a NoMatchingXmlPart if no element or attribute matching the method name is
-    # found in the children of the current location in the DOM.
-    def find_matches method_name
-      matches = @nokogiri_node.xpath(xpath_for(method_name))
-      raise NoMatchingXmlPart.new(method_name) if matches.length < 1
-      return matches
-    end
-    
     # I don't like this hacky way of getting hold of the singleton class to define
     # a method, but it's better than instance_eval'ing a dynamic string to define
     # a method.
@@ -102,10 +112,6 @@ module Peachy
 
     def get_my_singleton_class
       (class << self; self; end)
-    end
-
-    def xpath_for method_name
-      "./#{method_name}|./#{as_camel_case(method_name)}|./#{as_hyphen_separated(method_name)}"
     end
   end
 end
