@@ -1,5 +1,5 @@
 module Peachy
-  class ProxyWithAttributes < Proxy
+  class ChildlessProxyWithAttributes < Proxy
     include StringStyler
     
     def value

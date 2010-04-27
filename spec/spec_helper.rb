@@ -3,7 +3,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), '../lib/no_matching_x
 require File.expand_path(File.join(File.dirname(__FILE__), '../lib/peachy/convention_checks'))
 require File.expand_path(File.join(File.dirname(__FILE__), '../lib/peachy/string_styler'))
 require File.expand_path(File.join(File.dirname(__FILE__), '../lib/peachy/proxy'))
-require File.expand_path(File.join(File.dirname(__FILE__), '../lib/peachy/proxy_with_attributes'))
+require File.expand_path(File.join(File.dirname(__FILE__), '../lib/peachy/childless_proxy_with_attributes'))
 
 Spec::Runner.configure do |config|
   # these aren't the droids you're looking for....

@@ -99,7 +99,7 @@ module Peachy
     end
 
     def create_child_proxy_with_attributes method_name, match
-      return create_child(method_name, ProxyWithAttributes.new(match))
+      return create_child(method_name, ChildlessProxyWithAttributes.new(match))
     end
 
     def create_child method_name, return_value
