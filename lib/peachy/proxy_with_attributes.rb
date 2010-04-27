@@ -12,7 +12,7 @@ module Peachy
       # do the attribute stuff
       match = @nokogiri_node.attribute(method_name_as_string)
       match = @nokogiri_node.attribute(as_camel_case(method_name_as_string)) if match.nil?
-      return create_content(method_name_as_string, match) unless match.nil?
+      return create_content_child(method_name_as_string, match) unless match.nil?
       create_method_for_child_or_content method_name
     end
   end

@@ -3,11 +3,17 @@ require 'nokogiri'
 
 module Peachy
   class Proxy
-    methods_to_hide = public_instance_methods.clone
-    methods_to_hide.delete('methods')
-    methods_to_hide.delete('respond_to?')
-    private *methods_to_hide
+    # This method hides all public methods on the class except for methods and
+    # respond_to?, which i've found are too useful to hide for the time being.
+    def self.hide_public_methods
+      methods_to_hide = public_instance_methods.clone
+      methods_to_hide.delete('methods')
+      methods_to_hide.delete('respond_to?')
+      private *methods_to_hide
+    end
+    
     alias_method :original_method_missing, :method_missing
+    hide_public_methods
 
     include ConventionChecks, StringStyler
     
@@ -21,10 +27,10 @@ module Peachy
     # first_node does match a child of the DOM encapsulated by proxy, then
     # first_node will be generated on proxy.
     # However, if first_node does not represent a child in the underlying DOM
-    # then the proxy will raise a NoMatchingXmlPart error.
+    # then proxy will raise a NoMatchingXmlPart error.
     # The method name used to access an XML node has to follow the standard Ruby
     # convention for method names, i.e. ^[a-z]+(?:_[a-z]+)?{0,}$
-    # Any calls that include arguments or a block will be defered to the default
+    # Any calls that include arguments or a block will be deferred to the default
     # implementation of method_missing
     def method_missing method_name, *args, &block
       original_method_missing method_name, args, &block if args.any? or block_given?
@@ -48,7 +54,7 @@ module Peachy
     def create_from_element method_name, match
       return create_child_proxy(method_name, match) if there_are_child_nodes(match)
       return create_child_proxy_with_attributes(method_name, match) if node_has_attributes(match)
-      return create_content(method_name, match)
+      return create_content_child(method_name, match)
     end
 
     def node_has_attributes match
@@ -59,7 +65,7 @@ module Peachy
       match.xpath('./*').size > 0
     end
 
-    def create_content method_name, match
+    def create_content_child method_name, match
       return create_child(method_name, match.content)
     end
 
@@ -84,8 +90,9 @@ module Peachy
       return matches
     end
     
-    # I don't like this hacky way of getting hold of the eigenclass to define
-    # a method, but it's better than instance_eval'ing a string to def a method.
+    # I don't like this hacky way of getting hold of the singleton class to define
+    # a method, but it's better than instance_eval'ing a dynamic string to define
+    # a method.
     def define_method method_name, &block
       get_my_singleton_class.class_eval do
         define_method method_name, &block
