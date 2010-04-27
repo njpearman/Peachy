@@ -6,7 +6,7 @@ module Peachy
     end
 
     def matches_convention method_name
-      method_name =~ /^[a-z]+(?:_[a-z]+)?{0,}$/
+      method_name =~ /^[a-z]+(?:_[a-z]+){0,}$/
     end
   end
 end
