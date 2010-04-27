@@ -7,8 +7,7 @@ module Peachy
     # respond_to?, which i've found are too useful to hide for the time being.
     def self.hide_public_methods
       methods_to_hide = public_instance_methods.clone
-      methods_to_hide.delete('methods')
-      methods_to_hide.delete('respond_to?')
+      ['methods', 'respond_to?', 'inspect'].each {|to_stay_public| methods_to_hide.delete(to_stay_public)}
       private *methods_to_hide
     end
     
