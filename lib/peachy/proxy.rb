@@ -72,8 +72,12 @@ module Peachy
 
     private
     def nokogiri_node
-      raise InvalidProxyParameters.new(:xml => nil, :nokogiri => nil) if @xml.nil? and @nokogiri_node.nil?
+      raise InvalidProxyParameters.new(:xml => nil, :nokogiri => nil) if variables_are_invalid?
       @nokogiri_node ||= Nokogiri::XML(@xml)
+    end
+
+    def variables_are_invalid?
+      @xml.nil? and @nokogiri_node.nil?
     end
 
     # Runs the xpath for the method name against the underlying XML DOM, raising
