@@ -47,6 +47,12 @@ module Peachy
     def generate_method_for_xml method_name
       method_name_as_string = method_name.to_s
       check_for_convention(method_name_as_string)
+
+      if @nokogiri_node.children.size > 0
+        match = @nokogiri_node.attribute(method_name_as_string)
+        return create_content_child(method_name_as_string, match) unless match.nil?
+      end
+      
       create_method_for_child_or_content method_name
     end
 
@@ -88,12 +94,12 @@ module Peachy
       return create_child(method_name, match.content)
     end
 
-    def create_child_proxy_with_attributes method_name, match
-      return create_child(method_name, ProxyWithAttributes.new(match))
-    end
-
     def create_child_proxy method_name, match
       return create_child(method_name, Proxy.new(match))
+    end
+
+    def create_child_proxy_with_attributes method_name, match
+      return create_child(method_name, ProxyWithAttributes.new(match))
     end
 
     def create_child method_name, return_value
