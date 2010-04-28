@@ -18,8 +18,8 @@ EOF
     invalid_proxy = Peachy::Proxy.new Hash.new
     lambda { invalid_proxy.boom }.should raise_error InvalidProxyParameters, <<EOF
 The parameters that you passed to the Proxy were invalid.
-:xml = nil
 :nokogiri = nil
+:xml = nil
 EOF
   end
 end

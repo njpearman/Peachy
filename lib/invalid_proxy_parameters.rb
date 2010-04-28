@@ -4,7 +4,7 @@ class InvalidProxyParameters < Exception
     parameters_hash.each {|pair| parameters_string << ":#{pair.first} = #{pair.last.nil?? 'nil' : pair.last}" }
     super <<MESSAGE
 The parameters that you passed to the Proxy were invalid.
-#{parameters_string * "\n"}
+#{parameters_string.sort * "\n"}
 MESSAGE
   end
 end
