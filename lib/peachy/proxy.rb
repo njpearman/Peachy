@@ -58,7 +58,7 @@ module Peachy
       attribute_content = create_from_parent_with_attribute method_name_as_string, nokogiri_node
       return attribute_content unless attribute_content.nil?
       
-      create_method_for_child_or_content method_name
+      create_method_for_child_or_content method_name, nokogiri_node
     end
 
     def nokogiri_node
@@ -70,8 +70,8 @@ module Peachy
       @xml.nil? and @nokogiri_node.nil?
     end
 
-    def create_method_for_child_or_content method_name
-      matches = find_matches(method_name.to_s)
+    def create_method_for_child_or_content method_name, node
+      matches = find_matches(method_name.to_s, node)
       return create_from_element_list method_name, matches if matches.size > 1
       return create_from_element method_name, matches[0]
     end
@@ -79,8 +79,8 @@ module Peachy
     # Runs the xpath for the method name against the underlying XML DOM, raising
     # a NoMatchingXmlPart if no element or attribute matching the method name is
     # found in the children of the current location in the DOM.
-    def find_matches method_name
-      matches = nokogiri_node.xpath(xpath_for(method_name))
+    def find_matches method_name, node #=nokogiri_node
+      matches = node.xpath(xpath_for(method_name))
       raise NoMatchingXmlPart.new(method_name) if matches.length < 1
       return matches
     end

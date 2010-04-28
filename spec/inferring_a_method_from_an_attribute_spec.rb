@@ -10,5 +10,9 @@ describe "inferring a method from an attribute" do
   it "should be able to generate a method representing an attribute" do
     @proxy.test_node.id.should == '1'
   end
+
+  it "should raise an error if method name doesn't match an attribute name" do
+    lambda { @proxy.test_node.missing }.should raise_error NoMatchingXmlPart, "missing is not contained as a child of this node."
+  end
 end
 

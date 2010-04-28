@@ -12,9 +12,8 @@ module Peachy
       # do the attribute stuff.  this isn't very elegant...
       match = @nokogiri_node.attribute(method_name_as_string)
       match = @nokogiri_node.attribute(as_camel_case(method_name_as_string)) if match.nil?
-      return create_content_child(method_name_as_string, match) unless match.nil?
-      
-      create_method_for_child_or_content method_name
+      raise NoMatchingXmlPart.new method_name if match.nil?
+      return create_content_child(method_name_as_string, match)
     end
   end
 end
