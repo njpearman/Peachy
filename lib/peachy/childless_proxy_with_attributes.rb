@@ -6,6 +6,7 @@ module Peachy
       @nokogiri_node.content
     end
 
+    private
     def generate_method_for_xml method_name
       method_name_as_string = method_name.to_s
       check_for_convention(method_name_as_string)
@@ -15,7 +16,6 @@ module Peachy
       return create_content_child(method_name_as_string, match)
     end
 
-    private
     def find_match_by_attributes method_name, node
       match = node.attribute(method_name)
       match = node.attribute(as_camel_case(method_name)) if match.nil?
