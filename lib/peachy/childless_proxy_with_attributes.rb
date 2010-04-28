@@ -10,10 +10,16 @@ module Peachy
       method_name_as_string = method_name.to_s
       check_for_convention(method_name_as_string)
       # do the attribute stuff.  this isn't very elegant...
-      match = @nokogiri_node.attribute(method_name_as_string)
-      match = @nokogiri_node.attribute(as_camel_case(method_name_as_string)) if match.nil?
+      match = find_match_by_attributes method_name_as_string, nokogiri_node
       raise NoMatchingXmlPart.new method_name if match.nil?
       return create_content_child(method_name_as_string, match)
+    end
+
+    private
+    def find_match_by_attributes method_name, node
+      match = node.attribute(method_name)
+      match = node.attribute(as_camel_case(method_name)) if match.nil?
+      return match
     end
   end
 end
