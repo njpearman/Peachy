@@ -1,9 +1,7 @@
 module Peachy
   class MethodName
-    include StringStyler
-
     def initialize method_name
-      @method_name = method_name
+      @method_name = method_name.to_s
     end
 
     def variations
@@ -17,5 +15,8 @@ module Peachy
     def to_sym
       return @method_name.to_sym
     end
+
+    private
+    include StringStyler
   end
 end

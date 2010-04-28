@@ -22,5 +22,17 @@ describe "how to use Peachy::MethodName" do
     variations.should include 'MethodName'
     variations.should include 'method-name'
   end
+
+  it "should be possible to create a MethodName from a symbol" do
+    @method_name = Peachy::MethodName.new :method
+    variations = @method_name.variations
+
+    @method_name.to_s.should == 'method'
+    @method_name.to_sym.should == :method
+    
+    variations.should include 'method'
+    variations.should include 'Method'
+    variations.should include 'method'
+  end
 end
 
