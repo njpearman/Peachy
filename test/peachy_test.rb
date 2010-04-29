@@ -13,7 +13,7 @@ proxy = Peachy::Proxy.new :xml => '<testnode>Check meh.</testnode>'
 puts proxy.testnode
 
 
-xml = <<STR
+xml = <<XML
 <root status="ok">
   <toptags>
     <tag position="1">
@@ -39,7 +39,7 @@ xml = <<STR
     </tag>
   </toptags>
 </root>
-STR
+XML
 
 proxy = Peachy::Proxy.new :xml => xml
 
