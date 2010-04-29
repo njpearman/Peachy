@@ -10,4 +10,9 @@ describe "attributes on a parent node" do
   it "should return the parent attribute by name" do
     @proxy.root.test_node.name.should == 'Test'
   end
+
+  it "should define the attribute name as a method" do
+    @proxy.root.test_node.name
+    @proxy.root.test_node.methods.should include 'name'
+  end
 end

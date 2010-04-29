@@ -24,8 +24,8 @@ describe "inferring a method from an element name" do
 
   it 'should define the method on an instance, not on the class' do
     @proxy.testnode
-    @proxy.methods.include?('testnode').should be_true
-    @another_proxy.methods.include?('testnode').should be_false
+    @proxy.methods.should include 'testnode'
+    @another_proxy.methods.should_not include 'testnode'
   end
 
   it "should return the node contents when the node isn't defined as a method and the contents of the node is at the lowest point of the tree" do

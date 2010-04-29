@@ -70,7 +70,7 @@ module Peachy
     def create_method_for_child_or_content method_name, node
       matches = find_matches(method_name, node)
       return create_from_element_list method_name, matches if matches.size > 1
-      return create_from_element method_name, matches[0]
+      return create_from_element(matches[0]) {|child| define_child method_name, child }
     end
 
     # Runs the xpath for the method name against the underlying XML DOM, raising
@@ -89,20 +89,20 @@ module Peachy
     def create_from_parent_with_attribute method_name, node
       if there_are_child_nodes?(node) and node_has_attributes?(node)
         match = node.attribute(method_name.to_s)
-        return create_content_child(method_name, match) unless match.nil?
+        create_content_child(match) {|child| define_child method_name, child } unless match.nil?
       end
     end
 
-    def create_from_element_list  method_name, matches
+    def create_from_element_list method_name, matches
         items = []
-        matches.each {|child| items << child.content }
-        create_child(method_name, items)
+        matches.each {|child| items << create_from_element(child) }
+        define_method(method_name) { return items }
     end
 
-    def create_from_element method_name, match
-      return create_child_proxy(method_name, match) if there_are_child_nodes?(match)
-      return create_child_proxy_with_attributes(method_name, match) if node_has_attributes?(match)
-      return create_content_child(method_name, match)
+    def create_from_element match, &block
+      return create_child_proxy match, &block if there_are_child_nodes?(match)
+      return create_child_proxy_with_attributes match, &block if node_has_attributes?(match)
+      return create_content_child match, &block
     end
 
     def node_has_attributes? match
@@ -116,29 +116,32 @@ module Peachy
       match.children.any? {|child| child.kind_of? Nokogiri::XML::Element}
     end
 
-    def create_content_child method_name, match
-      return create_child(method_name, match.content)
+    def create_content_child match, &block
+      create_child match.content, &block
     end
 
-    def create_child_proxy method_name, match
-      return create_child(method_name, Proxy.new(:nokogiri => match))
+    def create_child_proxy match, &block
+      create_child Proxy.new(:nokogiri => match), &block
     end
 
-    def create_child_proxy_with_attributes method_name, match
-      return create_child(method_name, ChildlessProxyWithAttributes.new(:nokogiri => match))
+    def create_child_proxy_with_attributes match, &block
+      create_child ChildlessProxyWithAttributes.new(:nokogiri => match), &block
     end
 
-    def create_child method_name, return_value
-      return define_method(method_name) { return return_value }
+    def create_child child
+      yield child if block_given?
+      return child
+    end
+
+    def define_child method_name, child
+      define_method(method_name) { return child }
     end
 
     # I don't like this hacky way of getting hold of the singleton class to define
     # a method, but it's better than instance_eval'ing a dynamic string to define
     # a method.
     def define_method method_name, &block
-      get_my_singleton_class.class_eval do
-        define_method method_name.to_sym, &block
-      end
+      get_my_singleton_class.class_eval { define_method method_name.to_sym, &block }
       yield
     end
 
