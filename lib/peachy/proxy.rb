@@ -45,19 +45,16 @@ module Peachy
     #
     # Any calls to undefined methods that include arguments or a block will be
     # deferred to the default implementation of method_missing.
-    def method_missing method_name, *args, &block
-      original_method_missing method_name, args, &block if args.any? or block_given?
-      generate_method_for_xml method_name
+    def method_missing method_name_symbol, *args, &block
+      original_method_missing method_name_symbol, args, &block if args.any? or block_given?
+      generate_method_for_xml MethodName.new(method_name_symbol)
     end
 
     private
     def generate_method_for_xml method_name
-      method_name_as_string = method_name.to_s
-      check_for_convention(method_name_as_string)
-
-      attribute_content = create_from_parent_with_attribute method_name_as_string, nokogiri_node
+      check_for_convention(method_name)
+      attribute_content = create_from_parent_with_attribute method_name, nokogiri_node
       return attribute_content unless attribute_content.nil?
-      
       create_method_for_child_or_content method_name, nokogiri_node
     end
 
@@ -71,7 +68,7 @@ module Peachy
     end
 
     def create_method_for_child_or_content method_name, node
-      matches = find_matches(method_name.to_s, node)
+      matches = find_matches(method_name, node)
       return create_from_element_list method_name, matches if matches.size > 1
       return create_from_element method_name, matches[0]
     end
@@ -86,12 +83,12 @@ module Peachy
     end
 
     def xpath_for method_name
-      "./#{method_name}|./#{as_camel_case(method_name)}|./#{as_hyphen_separated(method_name)}"
+      method_name.variations.map {|variation| "./#{variation}" } * '|'
     end
 
     def create_from_parent_with_attribute method_name, node
       if there_are_child_nodes?(node) and node_has_attributes?(node)
-        match = node.attribute(method_name)
+        match = node.attribute(method_name.to_s)
         return create_content_child(method_name, match) unless match.nil?
       end
     end
@@ -140,7 +137,7 @@ module Peachy
     # a method.
     def define_method method_name, &block
       get_my_singleton_class.class_eval do
-        define_method method_name, &block
+        define_method method_name.to_sym, &block
       end
       yield
     end
