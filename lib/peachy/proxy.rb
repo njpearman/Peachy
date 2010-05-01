@@ -3,21 +3,14 @@ require 'nokogiri'
 
 module Peachy
   class Proxy
-    # This method hides all public methods on the class except for 'methods' and
+    alias_method :original_method_missing, :method_missing
+    extend MethodMask
+    include ConventionChecks
+
+    # This hides all public methods on the class except for 'methods' and
     # 'respond_to?' and 'inspect', which I've found are too useful to hide for
     # the time being.
-    def self.hide_public_methods
-      methods_to_hide = public_instance_methods.clone
-      ['methods', 'respond_to?', 'inspect'].each do |to_stay_public|
-        methods_to_hide.delete(to_stay_public)
-      end
-      private *methods_to_hide
-    end
-    
-    alias_method :original_method_missing, :method_missing
-    hide_public_methods
-
-    include ConventionChecks, StringStyler
+    hide_public_methods ['methods', 'respond_to?', 'inspect']
 
     # Takes a hash as an argument.  Valid keys are:
     #   :xml -

@@ -1,6 +1,5 @@
 module Peachy
   module ConventionChecks
-    private
     def check_for_convention method_name
       raise MethodNotInRubyConvention.new(method_name) unless matches_convention(method_name)
     end
