@@ -40,11 +40,12 @@ be abstracted out at some point.
 
 === Elements and Attributes
 
-Currently, elements and attributes are accessed in exactly the same way, that is
-to call a method on your current node matching the attribute or element name that
-is required.
-As Peachy is currently just slurping XML, it makes it easy to know how to access
-the property that you're after if the conventions are the same.
+Currently, elements and attributes are accessed in exactly the same way; that is,
+call a method on your current node matching the attribute or element name that
+is required next.
+As Peachy is just for slurping XML, it makes it easy to know how to access
+the property that you're after if the conventions are the same for noth elements
+and attributes.
 
 === No method name match
 
