@@ -90,14 +90,16 @@ module Peachy
     end
 
     def create_from_element_list method_name, matches
-        items = []
-        matches.each {|child| items << create_from_element(child) }
-        define_method(method_name) { return items }
+        define_method(method_name) { return matches_as_array_of_proxies matches }
+    end
+
+    def matches_as_array_of_proxies matches
+      matches.inject([]) {|array, child| array << create_from_element(child) }
     end
 
     def create_from_element match, &block
-      return create_child_proxy match, &block if there_are_child_nodes?(match)
-      return create_child_proxy_with_attributes match, &block if node_has_attributes?(match)
+      return create_proxy match, &block if there_are_child_nodes?(match)
+      return create_proxy_with_attributes match, &block if node_has_attributes?(match)
       return create_content_child match, &block
     end
 
@@ -116,11 +118,11 @@ module Peachy
       create_child match.content, &block
     end
 
-    def create_child_proxy match, &block
+    def create_proxy match, &block
       create_child Proxy.new(:nokogiri => match), &block
     end
 
-    def create_child_proxy_with_attributes match, &block
+    def create_proxy_with_attributes match, &block
       create_child ChildlessProxyWithAttributes.new(:nokogiri => match), &block
     end
 
