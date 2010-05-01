@@ -1,4 +1,4 @@
-require 'requires'
+require File.expand_path(File.join(File.dirname(__FILE__), '../lib/peachy'))
 
 proxy = Peachy::Proxy.new :xml => '<testnode>Check meh.</testnode>'
 puts proxy.testnode
