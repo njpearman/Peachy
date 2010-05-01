@@ -5,7 +5,9 @@ module Peachy
     end
 
     def variations
-      [@method_name, as_camel_case(@method_name), as_hyphen_separated(@method_name)]
+      arr = [@method_name]
+      Peachy::StringStyler.instance_methods.each{|method| arr << send(method, @method_name) }
+      arr
     end
 
     def to_s

@@ -1,6 +1,6 @@
-describe "interpretting element and attribute names that are defined camel case" do
+describe "interpreting element and attribute names that are defined in camelCase" do
   before(:each) do
-    @proxy = Peachy::Proxy.new :xml => '<root><TestNode>Check meh.</TestNode><SecondNode id="2" RecordLabel="Wall of Sound">Check meh, too.</SecondNode></root>'
+    @proxy = Peachy::Proxy.new :xml => '<root><testNode>Check meh.</testNode><secondNode id="2" recordLabel="Wall of Sound">Check meh, too.</secondNode></root>'
   end
 
   it "should match a method to an element by camel case" do
