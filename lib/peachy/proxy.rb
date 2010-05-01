@@ -90,10 +90,10 @@ module Peachy
     end
 
     def create_from_element_list method_name, matches
-        define_method(method_name) { return matches_as_array_of_proxies matches }
+        define_method(method_name) { return matches_to_array matches }
     end
 
-    def matches_as_array_of_proxies matches
+    def matches_to_array matches
       matches.inject([]) {|array, child| array << create_from_element(child) }
     end
 
@@ -111,7 +111,7 @@ module Peachy
     # The choice of implementation is based on performance tests between using
     # XPath and a Ruby iterator.
     def there_are_child_nodes? match
-      match.children.any? {|child| child.kind_of? Nokogiri::XML::Element}
+      match.children.any? {|child| child.kind_of? Nokogiri::XML::Element }
     end
 
     def create_content_child match, &block
