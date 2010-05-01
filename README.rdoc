@@ -5,7 +5,7 @@ on the fly to match the elements and attributes of the XML.
 
 Source available at http://github.com/njpearman/Peachy
 
-=== Install
+== Install
 There is no gem available for Peachy yet.  This is the next bit of work to
 complete. In the meantime, if you wish to mess around with Peachy, download and
 include the source files in /lib within your project.
