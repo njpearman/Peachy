@@ -1,7 +1,5 @@
 module Peachy
   class ChildlessProxyWithAttributes < Proxy
-    include StringStyler
-    
     def value
       @nokogiri_node.content
     end

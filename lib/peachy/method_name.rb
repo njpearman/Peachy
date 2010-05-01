@@ -10,9 +10,8 @@ module Peachy
     # The valid varations are the underlying method name, plus all variations
     # provided by methods defined in the StringStyler module.
     def variations
-      variations = [@method_name]
-      (variations_methods.inject(variations) do |array, method|
-        array << send(method, @method_name)
+      (variation_methods.inject([@method_name]) do |array, method|
+        array << send(method)
       end).uniq
     end
 
@@ -25,7 +24,7 @@ module Peachy
     end
 
     private
-    def variations_methods
+    def variation_methods
       Peachy::StringStyler.private_instance_methods
     end
   end
