@@ -1,13 +1,19 @@
 module Peachy
   class MethodName
+    include StringStyler
+
     def initialize method_name
       @method_name = method_name.to_s
     end
 
+    # Returns an array of distinct valid variations in the method name.
+    # The valid varations are the underlying method name, plus all variations
+    # provided by methods defined in the StringStyler module.
     def variations
-      arr = [@method_name]
-      Peachy::StringStyler.instance_methods.each{|method| arr << send(method, @method_name) }
-      arr
+      variations = [@method_name]
+      (variations_methods.inject(variations) do |array, method|
+        array << send(method, @method_name)
+      end).uniq
     end
 
     def to_s
@@ -19,6 +25,8 @@ module Peachy
     end
 
     private
-    include StringStyler
+    def variations_methods
+      Peachy::StringStyler.private_instance_methods
+    end
   end
 end
