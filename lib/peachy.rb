@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '/invalid_proxy_parameters')
+require File.join(File.dirname(__FILE__), 'invalid_proxy_parameters')
 require File.join(File.dirname(__FILE__), 'method_not_in_ruby_convention')
 require File.join(File.dirname(__FILE__), 'no_matching_xml_part')
 require File.join(File.dirname(__FILE__), 'peachy/convention_checks')
