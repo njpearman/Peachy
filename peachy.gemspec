@@ -1,7 +1,4 @@
 # -*- encoding: utf-8 -*-
-#lib = File.expand_path('../lib/', __FILE__)
-#$:.unshift lib unless $:.include?(lib)
-
 require 'lib/peachy/version'
 
 Gem::Specification.new do |s|
@@ -11,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors = ["NJ Pearman"]
   s.email = ["n.pearman@gmail.com"]
   s.description = <<DESCRIPTION
-Peachy is an XML slurper that sits on to of existing XML parsers.  It dynamically 
+Peachy is an XML slurper that sits on top of existing XML parsers.  It dynamically
 creates object-style hierachies for simple ingration of XML data sources.
 DESCRIPTION
 
