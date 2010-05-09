@@ -34,8 +34,30 @@ module Peachy
     # is made to call a method on a Peachy::Proxy that breaks this convention,
     # Peachy will simply raise a MethodNotInRubyConvention error.
     #
+    # Collections are referenced as an array following the name of the individual
+    # items of the collection.
+    #
+    # e.g.
+    # xml = <<XML
+    # <feed>
+    #   <items>
+    #     <item>Story 1</item>
+    #     <item>Story 2</item>
+    #     <item>Story 3</item>
+    #   </items>
+    # </feed>
+    # XML
+    # 
+    # @proxy = Peachy::Proxy xml
+    # @proxy.feed.items.item[0]
+    # => Story 1
+    # @proxy.feed.items.item[2]
+    # => Story 3
+    #
+    #
     # Any calls to undefined methods that include arguments or a block will be
     # deferred to the default implementation of method_missing.
+    #
     def method_missing method_name_symbol, *args, &block
       return morph_into_array if you_use_me_like_an_array(method_name_symbol, *args)
       original_method_missing method_name_symbol, args, &block if args.any? or block_given?
@@ -49,7 +71,8 @@ module Peachy
     end
 
     def mimic object_to_mimic
-      eval_on_singleton_class do define_method(:method_missing) do |method_name, *args|
+      eval_on_singleton_class do
+        define_method(:method_missing) do |method_name, *args|
           puts "You want to do '#{method_name}' to me?  With '#{args}'..?"
           return object_to_mimic.send(method_name, *args) &block if block_given?
           return object_to_mimic.send(method_name, *args)
