@@ -14,7 +14,7 @@ require File.join(File.dirname(__FILE__), 'peachy/childless_proxy_with_attribute
 
 module Peachy
   def self.whine
-    @whine = false
+    @whine = true
   end
 
   def self.whiny?
