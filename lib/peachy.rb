@@ -6,6 +6,7 @@ require File.join(File.dirname(__FILE__), 'peachy/convention_checks')
 require File.join(File.dirname(__FILE__), 'peachy/string_styler')
 require File.join(File.dirname(__FILE__), 'peachy/method_name')
 require File.join(File.dirname(__FILE__), 'peachy/method_mask')
+require File.join(File.dirname(__FILE__), 'peachy/morph_into_array')
 require File.join(File.dirname(__FILE__), 'peachy/proxy')
 require File.join(File.dirname(__FILE__), 'peachy/childless_proxy_with_attributes')
 
