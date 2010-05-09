@@ -14,17 +14,19 @@ include the source files in /lib within your project.
 The Peachy::Proxy is the key class in Peachy.  Create a new instance of a
 Peachy::Proxy passing in either a raw XML string, or a Nokogiri::XML instance
 
-    proxy = Peachy::Proxy.new :xml => '<xml><node>Peachy</node></xml>'
+    proxy = Peachy::Proxy.new('<xml><node>Peachy</node></xml>')
 
 or
 
-    proxy = Peachy::Proxy.new :nokogiri => Nokogiri::XML('<xml><node>Peachy</node></xml>')
+    proxy = Peachy::Proxy.new(Nokogiri::XML('<xml><node>Peachy</node></xml>'))
 
 Once you have a Proxy, it's straightforward to drill down through the XML by
 node name:
 
-    puts 'Contents: ' + proxy.xml.node
+    puts 'Contents: ' + proxy.xml.node.value
     -> Contents: Peachy
+
+Either .value or .to_s can be called to get the contents of the current node.
 
 Peachy expects method names to be called in the Ruby convention of lowercase with
 underscores.  It will do it's best to match method names to elements and attributes
@@ -40,12 +42,21 @@ be abstracted out at some point.
 
 === Elements and Attributes
 
-Currently, elements and attributes are accessed in exactly the same way; that is,
+Currently, elements and attributes are accessed in almost exactly the same way;
 call a method on your current node matching the attribute or element name that
-is required next.
-As Peachy is just for slurping XML, it makes it easy to know how to access
-the property that you're after if the conventions are the same for noth elements
-and attributes.
+is required next.  Elements need to have .value or .to_s called on them to get
+the contents of the element, however.
+
+E.g.
+
+    proxy = Peachy::Proxy.new('<xml version="1.0.0"><node>Peachy</node></xml>')
+    puts "Element contents: " + proxy.xml.node.value
+    => Element contents: Peachy
+    puts "Element attribute: " + proxy.xml.version
+    => Element attribute: 1.0.0
+
+Peachy is just for slurping XML, so this convention should make it easy to know
+how to access the property that you're after, be they elements or attributes.
 
 === No method name match
 

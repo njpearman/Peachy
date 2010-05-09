@@ -27,7 +27,9 @@ xml = <<7DIG
 </response>
 7DIG
 
-proxy = Peachy::Proxy.new :xml => xml
+proxy = Peachy::Proxy.new xml
 
 puts "Response details:  status=#{proxy.response.status} version=#{proxy.response.version}"
-proxy.response.tags.tag.each {|tag| puts "Found tag '#{tag.text}' with count #{tag.count}" }
+proxy.response.tags.tag.each do |tag|
+  puts "Found tag '#{tag.text.value}' with count #{tag.count.value}"
+end

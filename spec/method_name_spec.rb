@@ -41,7 +41,6 @@ describe "how to use Peachy::MethodName" do
     @method_name = Peachy::MethodName.new :method
     variations = @method_name.variations
 
-    puts variations
     variations.size.should == 2
     variations.should include 'method'
     variations.should include 'Method'

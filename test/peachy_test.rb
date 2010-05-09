@@ -1,7 +1,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '../lib/peachy'))
 
-proxy = Peachy::Proxy.new :xml => '<testnode>Check meh.</testnode>'
-puts proxy.testnode
+proxy = Peachy::Proxy.new '<testnode>Check meh.</testnode>'
+puts proxy.testnode.value
 
 
 xml = <<XML
@@ -32,7 +32,7 @@ xml = <<XML
 </root>
 XML
 
-proxy = Peachy::Proxy.new :xml => xml
+proxy = Peachy::Proxy.new xml
 
 puts "Status okay? #{proxy.root.status == 'ok'}"
-proxy.root.toptags.tag.each {|tag| puts "Found tag '#{tag.name}' at #{tag.position}" }
+proxy.root.toptags.tag.each {|tag| puts "Found tag '#{tag.name.value}' at #{tag.position}" }
