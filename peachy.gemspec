@@ -12,7 +12,7 @@ Peachy is an XML slurper that sits on top of existing XML parsers.  It dynamical
 creates object-style hierachies for simple ingration of XML data sources.
 DESCRIPTION
 
-  s.files = Dir.glob("{lib}/**/*") + %w(README.rdoc)
+  s.files = Dir.glob("{lib,spec}/**/*") + %w(README.rdoc)
   s.extra_rdoc_files = ["README.rdoc"]
 
   s.homepage = "http://github.com/njpearman/peachy"
