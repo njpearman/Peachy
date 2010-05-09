@@ -68,7 +68,7 @@ module Peachy
     def method_missing method_name_symbol, *args
       return morph_into_array if you_use_me_like_an_array(method_name_symbol, *args)
       original_method_missing method_name_symbol, args if args.any? or block_given?
-      @acts_as = :single_child
+      acts_as_only_child
       generate_method_for_xml MethodName.new(method_name_symbol)
     end
 

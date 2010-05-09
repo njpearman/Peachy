@@ -15,11 +15,20 @@ module Peachy
     end
 
     def morph_into_array
-        raise AlreadyASingleChild.new(nokogiri_node.name) if @acts_as == :single_child
-        puts "[Peachy::Proxy] So I should be an Array, then."
-        real_proxy = Peachy::Proxy.new nokogiri_node
-        mimic [real_proxy]
-        return real_proxy
+      puts "Currently acts as #{@acts_as}"
+      raise AlreadyASingleChild.new(nokogiri_node.name) if is_an_only_child
+      puts "[Peachy::Proxy] So I should be an Array, then."
+      real_proxy = create_from_element nokogiri_node
+      mimic [real_proxy]
+      return real_proxy
+    end
+
+    def acts_as_only_child
+      @acts_as = :only_child
+    end
+
+    def is_an_only_child
+       @acts_as == :only_child
     end
   end
 end

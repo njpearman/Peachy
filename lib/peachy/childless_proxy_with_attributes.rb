@@ -1,6 +1,7 @@
 module Peachy
   class ChildlessProxyWithAttributes < Proxy
     def value
+      acts_as_only_child
       @nokogiri_node.content
     end
 
