@@ -1,6 +1,6 @@
 describe "interpreting element and attribute names that are defined in PascalCase" do
   before(:each) do
-    @proxy = Peachy::Proxy.new :xml => '<Root><TestNode>Check meh.</TestNode><SecondNode Id="2" RecordLabel="Wall of Sound">Check meh, too.</SecondNode></Root>'
+    @proxy = Peachy::Proxy.new '<Root><TestNode>Check meh.</TestNode><SecondNode Id="2" RecordLabel="Wall of Sound">Check meh, too.</SecondNode></Root>'
   end
 
   it "should match a method to an element by pascal case" do

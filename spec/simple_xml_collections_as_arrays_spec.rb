@@ -1,7 +1,7 @@
 describe "a simple XML collection should be interpretted as an array" do
   before(:each) do
     xml = "<xml><stuff><item>first</item><item>second</item><item>third</item></stuff></xml>"
-    @proxy = Peachy::Proxy.new :xml => xml
+    @proxy = Peachy::Proxy.new xml
   end
 
   it "should set the correct sized array for a collection" do

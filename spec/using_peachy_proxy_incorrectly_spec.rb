@@ -1,6 +1,6 @@
 describe "using Peachy::Proxy incorrectly" do
   before(:each) do
-    @proxy = Peachy::Proxy.new :xml => '<testnode>Check meh.</testnode>'
+    @proxy = Peachy::Proxy.new '<testnode>Check meh.</testnode>'
   end
 
   it 'should raise a well written error if the method does not map to anything in the underlying XML node' do

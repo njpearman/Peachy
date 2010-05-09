@@ -15,7 +15,7 @@ describe "collections with children as arrays" do
   </list>
 </xml>
 STR
-    @peachy_proxy = Peachy::Proxy.new :xml => xml
+    @peachy_proxy = Peachy::Proxy.new xml
   end
 
   it "should create an array with the correct size" do

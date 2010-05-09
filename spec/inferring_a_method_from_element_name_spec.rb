@@ -1,8 +1,8 @@
 describe "inferring a method from an element name" do
   before(:each) do
     xml = '<testnode>Check meh.</testnode>'
-    @proxy = Peachy::Proxy.new :xml => xml
-    @another_proxy = Peachy::Proxy.new :xml => xml
+    @proxy = Peachy::Proxy.new xml
+    @another_proxy = Peachy::Proxy.new xml
   end
 
   it "should defer method_missing to the base class implementation if arguments are passed with the missing method" do

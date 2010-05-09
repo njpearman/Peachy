@@ -1,6 +1,6 @@
 describe "how to use Peachy::MethodName" do
   before(:each) do
-    @method_name = Peachy::MethodName.new "method_name"
+    @method_name = Peachy::MethodName.new 'method_name'
   end
 
   it "should return the original string as to_s" do

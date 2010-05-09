@@ -1,6 +1,6 @@
 describe "inferring a method from an attribute" do
   before(:each) do
-    @proxy = Peachy::Proxy.new :xml => '<test-node id="1" another="yellow">Check meh.</test-node>'
+    @proxy = Peachy::Proxy.new '<test-node id="1" another="yellow">Check meh.</test-node>'
   end
 
   it "should be able to access node contents by 'value'" do

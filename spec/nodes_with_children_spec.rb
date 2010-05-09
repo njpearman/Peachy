@@ -1,6 +1,6 @@
 describe "nodes with multiple children should be handled correctly" do
   before(:each) do
-    @peachy_proxy = Peachy::Proxy.new :xml => '<testnode><child>Check meh.</child><second_child><ancestor>Check meh two times.</ancestor></second_child></testnode>'
+    @peachy_proxy = Peachy::Proxy.new '<testnode><child>Check meh.</child><second_child><ancestor>Check meh two times.</ancestor></second_child></testnode>'
     @node_to_test = @peachy_proxy.testnode
   end
 

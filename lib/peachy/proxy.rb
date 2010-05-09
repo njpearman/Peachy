@@ -12,16 +12,11 @@ module Peachy
     # the time being.
     hide_public_methods ['methods', 'respond_to?', 'inspect']
 
-    # Takes a hash as an argument.  Valid keys are:
-    #   :xml -
-    #       used to pass raw XML into the Proxy, and the XML parser will be
-    #       created on the fly.
-    #   :nokogiri -
-    #       can be used to pass in a Nokogiri::XML instance, if one has
-    #       already been created.
+    # Takes either a string containing XML or a Nokogiri::XML::Element as the
+    # single argument.
     def initialize arguments
-      @nokogiri_node = arguments[:nokogiri]
-      @xml = arguments[:xml]
+      @xml = arguments if arguments.kind_of? String
+      @nokogiri_node = arguments if arguments.kind_of? Nokogiri::XML::Element
     end
 
     # Overloaded so that calls to methods representative of an XML element or
@@ -119,11 +114,11 @@ module Peachy
     end
 
     def create_proxy match, &block
-      create_child Proxy.new(:nokogiri => match), &block
+      create_child Proxy.new(match), &block
     end
 
     def create_proxy_with_attributes match, &block
-      create_child ChildlessProxyWithAttributes.new(:nokogiri => match), &block
+      create_child ChildlessProxyWithAttributes.new(match), &block
     end
 
     def create_child child
