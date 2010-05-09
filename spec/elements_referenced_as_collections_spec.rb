@@ -34,7 +34,7 @@ XML
 
   it "should raise an error if the element has already been accessed as a single child" do
     @proxy.xml.list.item.child
-    lambda { @proxy.xml.list.item[0] }.should raise_error AlreadyASingleChild, <<MSG
+    lambda { @proxy.xml.list.item[0] }.should raise_error AlreadyAnOnlyChild, <<MSG
 The 'item' node has already been accessed as a single child, but you are now trying to use it as a collection.
 Do not try to access Peachy::Proxies in a mixed manner in your implementation.
 MSG

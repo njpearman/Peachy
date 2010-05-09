@@ -23,7 +23,7 @@ describe "Peachy::SimpleContent wrapper for the contents of a simple XML element
 
   it "should raise an error if the SimpleContent is treated as an Array after being treated as SimpleContent" do
     @content.value
-    lambda { @content[0].value }.should raise_error AlreadyASingleChild, <<MESSAGE
+    lambda { @content[0].value }.should raise_error AlreadyAnOnlyChild, <<MESSAGE
 The 'parent_node' node has already been accessed as a single child, but you are now trying to use it as a collection.
 Do not try to access Peachy::Proxies in a mixed manner in your implementation.
 MESSAGE
