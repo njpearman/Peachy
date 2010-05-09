@@ -37,11 +37,34 @@ module Peachy
     # Any calls to undefined methods that include arguments or a block will be
     # deferred to the default implementation of method_missing.
     def method_missing method_name_symbol, *args, &block
+      return morph_into_array if you_use_me_like_an_array(method_name_symbol, *args)
       original_method_missing method_name_symbol, args, &block if args.any? or block_given?
+      @acts_as = :single_child
       generate_method_for_xml MethodName.new(method_name_symbol)
     end
 
     private
+    def you_use_me_like_an_array method_name, *args
+      method_name == :[] and args.one? and args.first == 0
+    end
+
+    def mimic object_to_mimic
+      eval_on_singleton_class do define_method(:method_missing) do |method_name, *args|
+          puts "You want to do '#{method_name}' to me?  With '#{args}'..?"
+          return object_to_mimic.send(method_name, *args) &block if block_given?
+          return object_to_mimic.send(method_name, *args)
+        end
+      end
+    end
+
+    def morph_into_array
+        raise AlreadyASingleChild.new(nokogiri_node.name) if @acts_as == :single_child
+        puts "So I should be an array, then."
+        real_proxy = Peachy::Proxy.new nokogiri_node
+        mimic [real_proxy]
+        return real_proxy
+    end
+    
     def generate_method_for_xml method_name
       check_for_convention(method_name)
       attribute_content = create_from_parent_with_attribute method_name, nokogiri_node
@@ -134,12 +157,12 @@ module Peachy
     # a method, but it's better than instance_eval'ing a dynamic string to define
     # a method.
     def define_method method_name, &block
-      get_my_singleton_class.class_eval { define_method method_name.to_sym, &block }
+      eval_on_singleton_class { define_method method_name.to_sym, &block }
       yield
     end
 
-    def get_my_singleton_class
-      (class << self; self; end)
+    def eval_on_singleton_class &block
+      (class << self; self; end).class_eval &block
     end
   end
 end
