@@ -54,6 +54,13 @@ module Peachy
     # @proxy.feed.items.item[2]
     # => Story 3
     #
+    # Note that Peachy will try to manage the case where a
+    # single node is treated as the the first and only element in a collection.
+    # In this case, the pattern above will apply.  Also, if an element is treated
+    # as a single child, but later treated as if it should be part of a
+    # collection, then an AlreadyASingleChild error will be raised.  You can't
+    # expect a node to be both a single child AND a single element in a
+    # collection.
     #
     # Any calls to undefined methods that include arguments or a block will be
     # deferred to the default implementation of method_missing.

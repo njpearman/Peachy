@@ -1,4 +1,4 @@
-describe "an element referenced as first part of a collection" do
+describe "an element referenced as the first part of a collection" do
   before(:each) do
     xml = <<XML
 <xml>
