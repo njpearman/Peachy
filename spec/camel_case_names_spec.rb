@@ -4,11 +4,11 @@ describe "interpreting element and attribute names that are defined in camelCase
   end
 
   it "should match a method to an element by camel case" do
-    @proxy.root.test_node.should == 'Check meh.'
+    @proxy.root.test_node.value.should == 'Check meh.'
   end
 
   it "should define a method from a camel cased element name" do
-    @proxy.root.test_node.should == 'Check meh.'
+    @proxy.root.test_node.value.should == 'Check meh.'
     @proxy.root.methods.should include 'test_node'
   end
 

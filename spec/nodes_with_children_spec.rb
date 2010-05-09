@@ -5,7 +5,7 @@ describe "nodes with multiple children should be handled correctly" do
   end
 
   it "should recurse the Proxy to children so that a child will have the correct value" do
-    @node_to_test.child.should == "Check meh."
+    @node_to_test.child.value.should == "Check meh."
   end
 
   it "should define a method with the child name on the proxy" do
@@ -16,7 +16,7 @@ describe "nodes with multiple children should be handled correctly" do
   end
 
   it "should recurse the Proxy to ancestors so that a child will have the correct value" do
-    @node_to_test.second_child.ancestor.should == "Check meh two times."
+    @node_to_test.second_child.ancestor.value.should == "Check meh two times."
   end
 end
 

@@ -13,7 +13,7 @@ XML
   end
 
   it "should infer that the element matches the first index of an array" do
-    @proxy.xml.list.item[0].child.should == 'one'
+    @proxy.xml.list.item[0].child.value.should == 'one'
   end
 
   it "should make attributes available on the single child" do
@@ -28,7 +28,8 @@ XML
     element_as_array.one?.should be_true
     element_as_array.empty?.should be_false
     element_as_array.size.should == 1
-    element_as_array[0].child.should == 'one'
+    (element_as_array.map {|item| item.child.value }).should == ['one']
+    element_as_array[0].child.value.should == 'one'
   end
 
   it "should raise an error if the element has already been accessed as a single child" do

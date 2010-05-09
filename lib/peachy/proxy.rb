@@ -5,7 +5,7 @@ module Peachy
   class Proxy
     alias_method :original_method_missing, :method_missing
     extend MethodMask
-    include ConventionChecks, MorphIntoArray
+    include ConventionChecks, MorphIntoArray, MyMetaClass
 
     # This hides all public methods on the class except for 'methods' and
     # 'respond_to?' and 'inspect', which I've found are too useful to hide for
@@ -66,13 +66,17 @@ module Peachy
     # deferred to the default implementation of method_missing.
     #
     def method_missing method_name_symbol, *args
-      return morph_into_array if you_use_me_like_an_array(method_name_symbol, *args)
+      return morph_into_array(create_from_element(nokogiri_node)) if you_use_me_like_an_array(method_name_symbol, *args)
       original_method_missing method_name_symbol, args if args.any? or block_given?
       acts_as_only_child
       generate_method_for_xml MethodName.new(method_name_symbol)
     end
 
     private
+    def node_name
+      nokogiri_node.name
+    end
+    
     def generate_method_for_xml method_name
       check_for_convention(method_name)
       attribute_content = create_from_parent_with_attribute method_name, nokogiri_node
@@ -111,7 +115,7 @@ module Peachy
     def create_from_parent_with_attribute method_name, node
       if there_are_child_nodes?(node) and node_has_attributes?(node)
         match = node.attribute(method_name.to_s)
-        create_content_child(match) {|child| define_child method_name, child } unless match.nil?
+        create_value(match) {|child| define_child method_name, child } unless match.nil?
       end
     end
 
@@ -140,8 +144,12 @@ module Peachy
       match.children.any? {|child| child.kind_of? Nokogiri::XML::Element }
     end
 
-    def create_content_child match, &block
+    def create_value match, &block
       create_child match.content, &block
+    end
+    
+    def create_content_child match, &block
+      create_child SimpleContent.new(match.content, match.name), &block
     end
 
     def create_proxy match, &block
@@ -167,10 +175,6 @@ module Peachy
     def define_method method_name, &block
       eval_on_singleton_class { define_method method_name.to_sym, &block }
       yield
-    end
-
-    def eval_on_singleton_class &block
-      (class << self; self; end).class_eval &block
     end
   end
 end

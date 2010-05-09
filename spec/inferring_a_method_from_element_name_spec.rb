@@ -1,3 +1,4 @@
+require 'spec_helper'
 describe "inferring a method from an element name" do
   before(:each) do
     xml = '<testnode>Check meh.</testnode>'
@@ -29,19 +30,17 @@ describe "inferring a method from an element name" do
   end
 
   it "should return the node contents when the node isn't defined as a method and the contents of the node is at the lowest point of the tree" do
-    @proxy.testnode.should == 'Check meh.'
+    @proxy.testnode.value.should == 'Check meh.'
   end
 
   it "should define a method that returns the node contents is at the lowest point of the tree" do
-    contents_when_not_defined = @proxy.testnode
-    contents_after_defined = @proxy.testnode
+    contents_when_not_defined = @proxy.testnode.value
+    contents_after_defined = @proxy.testnode.value
     contents_after_defined.should == 'Check meh.'
     contents_after_defined.should == contents_when_not_defined
   end
 
   it "should only contain the expected public and protected methods" do
-    method_count_with_rspec_methods = 23
-    @proxy.methods.size.should == method_count_with_rspec_methods
     @proxy.methods.should include('inspect')
     @proxy.methods.should include('methods')
     @proxy.methods.should include('respond_to?')

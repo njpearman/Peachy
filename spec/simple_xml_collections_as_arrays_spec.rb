@@ -14,9 +14,9 @@ describe "a simple XML collection should be interpretted as an array" do
   end
 
   it "should set each array item to the content for the list item" do
-    @proxy.xml.stuff.item[0].should == 'first'
-    @proxy.xml.stuff.item[1].should == 'second'
-    @proxy.xml.stuff.item[2].should == 'third'
+    @proxy.xml.stuff.item[0].value.should == 'first'
+    @proxy.xml.stuff.item[1].value.should == 'second'
+    @proxy.xml.stuff.item[2].value.should == 'third'
   end
 end
 

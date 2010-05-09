@@ -4,7 +4,7 @@ describe "attributes on a parent node" do
   end
 
   it "should return the child when accessing it by name" do
-    @proxy.root.test_node.child.should == 'Check meh.'
+    @proxy.root.test_node.child.value.should == 'Check meh.'
   end
 
   it "should return the parent attribute by name" do

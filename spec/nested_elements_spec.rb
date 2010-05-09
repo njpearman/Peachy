@@ -7,7 +7,7 @@ describe "nested elements should be handled corectly by Peachy" do
   end
 
   it "should be able to dot through the DOM hierachy" do
-    @proxy.root.first.second.should == 'Check meh.'
+    @proxy.root.first.second.value.should == 'Check meh.'
   end
 
   it "should define methods for the ancestors" do

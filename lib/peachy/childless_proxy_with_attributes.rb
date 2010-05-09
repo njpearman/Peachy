@@ -10,7 +10,7 @@ module Peachy
       check_for_convention(method_name)
       match = find_match_by_attributes method_name, nokogiri_node
       raise NoMatchingXmlPart.new method_name if match.nil?
-      return create_content_child(match) {|child| define_child method_name, child }
+      return create_value(match) {|child| define_child method_name, child }
     end
 
     def find_match_by_attributes method_name, node

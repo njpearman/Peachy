@@ -28,9 +28,9 @@ STR
   end
 
   it "should create the children as expected" do
-    @peachy_proxy.xml.list.item[0].child.should == "one"
-    @peachy_proxy.xml.list.item[1].child.should == "two"
-    @peachy_proxy.xml.list.item[2].child.should == "three"
+    @peachy_proxy.xml.list.item[0].child.value.should == "one"
+    @peachy_proxy.xml.list.item[1].child.value.should == "two"
+    @peachy_proxy.xml.list.item[2].child.value.should == "three"
   end
 end
 

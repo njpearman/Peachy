@@ -4,7 +4,7 @@ describe "interpretting element names that contain hyphens" do
   end
 
   it "should try to match a method to a node with hyphens" do
-    @proxy.test_node.should == 'Check meh.'
+    @proxy.test_node.value.should == 'Check meh.'
   end
 
   it "should define a method for the element name" do
