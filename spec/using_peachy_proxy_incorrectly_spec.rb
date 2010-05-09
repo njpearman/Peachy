@@ -14,7 +14,15 @@ Please use methods matching ^[a-z]+(?:_[a-z]+)?{0,}$ and Peachy will try to do t
 EOF
   end
 
-  it "should throw an InvalidProxyParameters error if no valid parameters were included in the initializer hash" do
+  it "should raise a standard NoMethodError if a block is passed with the method call" do
+    lambda { @proxy.testnode { puts "Bad usage." } }.should raise_error NoMethodError
+  end
+
+  it "should raise a standard NoMethodError if a parameter is passed with the method call" do
+    lambda { @proxy.testnode "Bad usage." }.should raise_error NoMethodError
+  end
+
+  it "should throw an InvalidProxyParameters error if an incorrect type of parameter was passed as the initializer argument" do
     invalid_proxy = Peachy::Proxy.new Hash.new
     lambda { invalid_proxy.boom }.should raise_error InvalidProxyParameters, <<EOF
 The parameters that you passed to the Proxy were invalid.

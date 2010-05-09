@@ -65,9 +65,9 @@ module Peachy
     # Any calls to undefined methods that include arguments or a block will be
     # deferred to the default implementation of method_missing.
     #
-    def method_missing method_name_symbol, *args, &block
+    def method_missing method_name_symbol, *args
       return morph_into_array if you_use_me_like_an_array(method_name_symbol, *args)
-      original_method_missing method_name_symbol, args, &block if args.any? or block_given?
+      original_method_missing method_name_symbol, args if args.any? or block_given?
       @acts_as = :single_child
       generate_method_for_xml MethodName.new(method_name_symbol)
     end
