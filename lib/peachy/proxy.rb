@@ -71,8 +71,18 @@ module Peachy
         return morph_into_array(new_proxy, method_name, *args, &block)
       end
       original_method_missing method_name, args if args.any? or block_given?
-      acts_as_only_child
-      generate_method_for_xml MethodName.new(method_name)
+      begin
+        to_return = generate_method_for_xml MethodName.new(method_name)
+        acts_as_only_child
+        return to_return
+      rescue NoMatchingXmlPart => e
+        if Array.instance_methods.include? method_name.to_s
+          new_proxy = create_from_element(nokogiri_node)
+          morph_into_array(new_proxy, method_name, *args, &block)
+        else
+          raise e
+        end
+      end
     end
 
     private
