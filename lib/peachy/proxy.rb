@@ -86,28 +86,15 @@ module Peachy
     end
 
     private
-    def node_name
-      nokogiri_node.name
-    end
-    
     def generate_method_for_xml method_name
       check_for_convention(method_name)
       attribute_content = create_from_parent_with_attribute method_name, nokogiri_node
       return attribute_content unless attribute_content.nil?
-      create_method_for_child_or_content method_name, nokogiri_node
+      matches = find_matches(method_name, nokogiri_node)
+      create_method_for_child_or_content method_name, matches
     end
 
-    def nokogiri_node
-      raise InvalidProxyParameters.new(:xml => nil, :nokogiri => nil) if variables_are_nil?
-      @nokogiri_node ||= Nokogiri::XML(@xml)
-    end
-
-    def variables_are_nil?
-      @xml.nil? and @nokogiri_node.nil?
-    end
-
-    def create_method_for_child_or_content method_name, node
-      matches = find_matches(method_name, node)
+    def create_method_for_child_or_content method_name, matches
       return create_from_element_list method_name, matches if matches.size > 1
       return create_from_element(matches[0]) {|child| define_child method_name, child }
     end
@@ -185,6 +172,19 @@ module Peachy
     def define_method method_name, &block
       eval_on_singleton_class { define_method method_name.to_sym, &block }
       yield
+    end
+    
+    def variables_are_nil?
+      @xml.nil? and @nokogiri_node.nil?
+    end
+
+    def node_name
+      nokogiri_node.name
+    end
+
+    def nokogiri_node
+      raise InvalidProxyParameters.new(:xml => nil, :nokogiri => nil) if variables_are_nil?
+      @nokogiri_node ||= Nokogiri::XML(@xml)
     end
   end
 end
