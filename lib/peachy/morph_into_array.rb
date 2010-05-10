@@ -1,7 +1,8 @@
 module Peachy
   module MorphIntoArray
-    def you_use_me_like_an_array method_name, *args
-      method_name == :[] and args.one? and args.first == 0
+    def you_use_me_like_an_array method_name, block_given, *args
+      return ((block_given or args.size > 0) and Array.instance_methods.include?(method_name.to_s))
+      #method_name == :[] and args.one? and args.first == 0
     end
 
     def mimic object_to_mimic
@@ -14,12 +15,12 @@ module Peachy
       end
     end
 
-    def morph_into_array to_add_to_array
+    def morph_into_array to_add_to_array, method_to_invoke, *args, &block
       puts "[Peachy::Proxy] Currently acts as #{@acts_as}" if Peachy.whiny?
       raise AlreadyAnOnlyChild.new(node_name) if is_an_only_child
       puts "[Peachy::Proxy] So #{node_name} should be an Array, then." if Peachy.whiny?
       mimic [to_add_to_array]
-      return to_add_to_array
+      return send(method_to_invoke, *args, &block)
     end
 
     def acts_as_only_child

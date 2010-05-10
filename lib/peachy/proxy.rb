@@ -65,11 +65,14 @@ module Peachy
     # Any calls to undefined methods that include arguments or a block will be
     # deferred to the default implementation of method_missing.
     #
-    def method_missing method_name_symbol, *args
-      return morph_into_array(create_from_element(nokogiri_node)) if you_use_me_like_an_array(method_name_symbol, *args)
-      original_method_missing method_name_symbol, args if args.any? or block_given?
+    def method_missing method_name, *args, &block
+      if you_use_me_like_an_array(method_name, block_given?, *args)
+        new_proxy = create_from_element(nokogiri_node)
+        return morph_into_array(new_proxy, method_name, *args, &block)
+      end
+      original_method_missing method_name, args if args.any? or block_given?
       acts_as_only_child
-      generate_method_for_xml MethodName.new(method_name_symbol)
+      generate_method_for_xml MethodName.new(method_name)
     end
 
     private
@@ -104,7 +107,7 @@ module Peachy
     # found in the children of the current location in the DOM.
     def find_matches method_name, node #=nokogiri_node
       matches = node.xpath(xpath_for(method_name))
-      raise NoMatchingXmlPart.new(method_name) if matches.length < 1
+      raise NoMatchingXmlPart.new(method_name, node_name) if matches.length < 1
       return matches
     end
 
@@ -169,9 +172,6 @@ module Peachy
       define_method(method_name) { return child }
     end
 
-    # I don't like this hacky way of getting hold of the singleton class to define
-    # a method, but it's better than instance_eval'ing a dynamic string to define
-    # a method.
     def define_method method_name, &block
       eval_on_singleton_class { define_method method_name.to_sym, &block }
       yield

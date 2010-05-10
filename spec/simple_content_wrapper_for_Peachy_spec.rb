@@ -14,7 +14,8 @@ describe "Peachy::SimpleContent wrapper for the contents of a simple XML element
   end
 
   it "should return the value from the index of 0" do
-    @content[0].value.should == 'the value'
+    item = @content[0]
+    item.value.should == 'the value'
   end
 
   it "should make the name of the parent node available" do

@@ -15,8 +15,11 @@ module Peachy
       @value
     end
 
-    def method_missing method_name, *args
-      return morph_into_array(SimpleContent.new(@value, @node_name)) if you_use_me_like_an_array(method_name, *args)
+    def method_missing method_name, *args, &block
+      if you_use_me_like_an_array(method_name, block_given?, *args)
+        new_content = SimpleContent.new(@value, @node_name)
+        return morph_into_array(new_content, method_name, *args, &block)
+      end
       original_method_missing method_name, *args
     end
   end

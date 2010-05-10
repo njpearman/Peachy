@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe "an element referenced as the first part of a collection" do
   before(:each) do
     xml = <<XML
@@ -20,7 +22,7 @@ XML
     @proxy.xml.list.item[0].id.should == '1'
   end
 
-  it "should quack like an array" do
+  it "should quack like an Array after an array element is referenced" do
     @proxy.xml.list.item[0]
 
     element_as_array = @proxy.xml.list.item
@@ -30,6 +32,17 @@ XML
     element_as_array.size.should == 1
     (element_as_array.map {|item| item.child.value }).should == ['one']
     element_as_array[0].child.value.should == 'one'
+  end
+
+  it "should quack like an array when an Array method is sent to node with a block" do
+    @values = []
+    @proxy.xml.list.item.each {|node| @values << node.id}
+    @values.should == ['1']
+  end
+
+  it "should quack like an array when an Array method is sent to node with no arguments" do
+    @values = []
+    @proxy.xml.list.item.size.should == 1
   end
 
   it "should raise an error if the element has already been accessed as a single child" do
