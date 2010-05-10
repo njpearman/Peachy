@@ -5,7 +5,7 @@ module Peachy
   class Proxy
     alias_method :original_method_missing, :method_missing
     extend MethodMask
-    include ConventionChecks, MorphIntoArray, MyMetaClass
+    include ConventionChecks, MorphIntoArray, MyMetaClass, NodeChildMatcher
 
     # This hides all public methods on the class except for 'methods', 'nil?'
     # 'respond_to?' and 'inspect', which I've found are too useful to hide for
@@ -66,21 +66,28 @@ module Peachy
     # deferred to the default implementation of method_missing.
     #
     def method_missing method_name, *args, &block
+      # check whether an Array method is called with arguments or a block
       if you_use_me_like_an_array(method_name, block_given?, *args)
-        new_proxy = create_from_element(nokogiri_node)
-        return morph_into_array(new_proxy, method_name, *args, &block)
+        return morph_into_array(clone, method_name, *args, &block)
       end
+
+      # standard method_missing for any other call with arguments or a block
       original_method_missing method_name, args if args.any? or block_given?
 
+      # try to create a method for the element
       to_return = generate_method_for_xml MethodName.new(method_name)
+
       if !to_return.nil?
+        # found a match, so flag as only child
         acts_as_only_child
         return to_return
       elsif array_can? method_name
+        # if child doesn't exist, see if the call might be inferring an Array
         new_proxy = create_from_element(nokogiri_node)
         morph_into_array(new_proxy, method_name, *args, &block)
       else
-          raise NoMatchingXmlPart.new(method_name, node_name)
+        # no matches, so throw
+        raise NoMatchingXmlPart.new(method_name, node_name)
       end
     end
 
@@ -100,19 +107,6 @@ module Peachy
     def create_method_for_child_or_content method_name, matches
       return create_from_element_list method_name, matches if matches.size > 1
       return create_from_element(matches[0]) {|child| define_child method_name, child }
-    end
-
-    # Runs the xpath for the method name against the underlying XML DOM, raising
-    # a NoMatchingXmlPart if no element or attribute matching the method name is
-    # found in the children of the current location in the DOM.
-    def find_matches method_name, node #=nokogiri_node
-      matches = node.xpath(xpath_for(method_name))
-      return nil if matches.length < 1
-      return matches
-    end
-
-    def xpath_for method_name
-      method_name.variations.map {|variation| "./#{variation}" } * '|'
     end
 
     def create_from_parent_with_attribute method_name, node
@@ -188,6 +182,10 @@ module Peachy
     def nokogiri_node
       raise InvalidProxyParameters.new(:xml => nil, :nokogiri => nil) if variables_are_nil?
       @nokogiri_node ||= Nokogiri::XML(@xml)
+    end
+
+    def clone
+      create_from_element(nokogiri_node)
     end
   end
 end
