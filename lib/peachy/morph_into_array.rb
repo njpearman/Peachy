@@ -1,8 +1,12 @@
 module Peachy
   module MorphIntoArray
     def you_use_me_like_an_array method_name, block_given, *args
-      return ((block_given or args.size > 0) and Array.instance_methods.include?(method_name.to_s))
+      return ((block_given or args.size > 0) and array_can?(method_name))
       #method_name == :[] and args.one? and args.first == 0
+    end
+
+    def array_can? method_name
+      Array.instance_methods.include?(method_name.to_s)
     end
 
     def mimic object_to_mimic

@@ -43,6 +43,7 @@ describe "inferring a method from an element name" do
   it "should only contain the expected public and protected methods" do
     @proxy.methods.should include('inspect')
     @proxy.methods.should include('methods')
+    @proxy.methods.should include('nil?')
     @proxy.methods.should include('respond_to?')
     @proxy.methods.should_not include('id')
   end

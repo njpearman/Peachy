@@ -7,10 +7,10 @@ module Peachy
     extend MethodMask
     include ConventionChecks, MorphIntoArray, MyMetaClass
 
-    # This hides all public methods on the class except for 'methods' and
+    # This hides all public methods on the class except for 'methods', 'nil?'
     # 'respond_to?' and 'inspect', which I've found are too useful to hide for
     # the time being.
-    hide_public_methods ['methods', 'respond_to?', 'inspect']
+    hide_public_methods ['methods', 'nil?', 'respond_to?', 'inspect']
 
     # Takes either a string containing XML or a Nokogiri::XML::Element as the
     # single argument.
@@ -71,17 +71,16 @@ module Peachy
         return morph_into_array(new_proxy, method_name, *args, &block)
       end
       original_method_missing method_name, args if args.any? or block_given?
-      begin
-        to_return = generate_method_for_xml MethodName.new(method_name)
+
+      to_return = generate_method_for_xml MethodName.new(method_name)
+      if !to_return.nil?
         acts_as_only_child
         return to_return
-      rescue NoMatchingXmlPart => e
-        if Array.instance_methods.include? method_name.to_s
-          new_proxy = create_from_element(nokogiri_node)
-          morph_into_array(new_proxy, method_name, *args, &block)
-        else
-          raise e
-        end
+      elsif array_can? method_name
+        new_proxy = create_from_element(nokogiri_node)
+        morph_into_array(new_proxy, method_name, *args, &block)
+      else
+          raise NoMatchingXmlPart.new(method_name, node_name)
       end
     end
 
@@ -91,7 +90,11 @@ module Peachy
       attribute_content = create_from_parent_with_attribute method_name, nokogiri_node
       return attribute_content unless attribute_content.nil?
       matches = find_matches(method_name, nokogiri_node)
-      create_method_for_child_or_content method_name, matches
+      if matches.nil?
+        return nil
+      else
+        create_method_for_child_or_content method_name, matches
+      end
     end
 
     def create_method_for_child_or_content method_name, matches
@@ -104,7 +107,7 @@ module Peachy
     # found in the children of the current location in the DOM.
     def find_matches method_name, node #=nokogiri_node
       matches = node.xpath(xpath_for(method_name))
-      raise NoMatchingXmlPart.new(method_name, node_name) if matches.length < 1
+      return nil if matches.length < 1
       return matches
     end
 
