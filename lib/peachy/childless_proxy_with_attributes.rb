@@ -12,10 +12,5 @@ module Peachy
       raise NoMatchingXmlPart.new method_name, node_name if match.nil?
       return create_value(match) {|child| define_child method_name, child }
     end
-
-    def find_match_by_attributes method_name, node
-      mapped = method_name.variations.map {|variation| node.attribute variation }
-      mapped.find {|match| match != nil }
-    end
   end
 end

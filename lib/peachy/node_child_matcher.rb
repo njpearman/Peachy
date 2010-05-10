@@ -9,6 +9,11 @@ module Peachy
       return matches
     end
 
+    def find_match_by_attributes method_name, node
+      mapped = method_name.variations.map {|variation| node.attribute variation }
+      mapped.find {|match| match != nil }
+    end
+
     # Gets the XPath for all variations of the MethodName instance
     def xpath_for method_name
       method_name.variations.map {|variation| "./#{variation}" } * '|'
