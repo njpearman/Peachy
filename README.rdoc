@@ -6,9 +6,15 @@ on the fly to match the elements and attributes of the XML.
 Source available at http://github.com/njpearman/Peachy
 
 == Install
-There is no gem available for Peachy yet.  This is the next bit of work to
-complete. In the meantime, if you wish to mess around with Peachy, download and
-include the source files in /lib within your project.
+The Peachy Ruby gem is available as you would expect.  Run:
+
+    gem install peachy
+
+then
+
+    require 'peachy'
+
+in irb/your codebase to get going.
 
 == Usage
 The Peachy::Proxy is the key class in Peachy.  Create a new instance of a
@@ -49,10 +55,10 @@ the contents of the element, however.
 
 E.g.
 
-    proxy = Peachy::Proxy.new('<xml version="1.0.0"><node>Peachy</node></xml>')
-    puts "Element contents: " + proxy.xml.node.value
-    => Element contents: Peachy
-    puts "Element attribute: " + proxy.xml.version
+    proxy = Peachy::Proxy.new('<peachy version="1.0.0"><node>Peachy is here.</node></peachy>')
+    puts "Element contents: " + proxy.peachy.node.value
+    => Element contents: Peachy is here
+    puts "Element attribute: " + proxy.peachy.version
     => Element attribute: 1.0.0
 
 Peachy is just for slurping XML, so this convention should make it easy to know
