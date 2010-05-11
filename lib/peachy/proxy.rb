@@ -75,16 +75,17 @@ module Peachy
       original_method_missing method_name, args if args.any? or block_given?
 
       # try to create a method for the element
-      to_return = generate_method_for_xml MethodName.new(method_name)
+      child_proxy = generate_method_for_xml(MethodName.new(method_name))
 
-      if !to_return.nil?
+      if !child_proxy.nil?
         # found a match, so flag as only child
         acts_as_only_child
-        return to_return
-      elsif array_can? method_name
-        # if child doesn't exist, see if the call might be inferring an Array
+        child_proxy
+      elsif array_can?(method_name)
+        # if child doesn't exist, see if the call might be a zero-argument
+        # Array call.
         new_proxy = create_from_element(nokogiri_node)
-        morph_into_array(new_proxy, method_name, *args, &block)
+        morph_into_array(new_proxy, method_name)
       else
         # no matches, so throw
         raise NoMatchingXmlPart.new(method_name, node_name)
@@ -94,25 +95,21 @@ module Peachy
     private
     def generate_method_for_xml method_name
       check_for_convention(method_name)
-      attribute_content = create_from_parent_with_attribute method_name, nokogiri_node
+      attribute_content = create_from_parent_with_attribute(method_name, nokogiri_node)
       return attribute_content unless attribute_content.nil?
       matches = find_matches(method_name, nokogiri_node)
-      if matches.nil?
-        return nil
-      else
-        create_method_for_child_or_content method_name, matches
-      end
+      matches.nil? ? nil : create_method_for_child_or_content(method_name, matches)
     end
 
     def create_method_for_child_or_content method_name, matches
-      return create_from_element_list method_name, matches if matches.size > 1
+      return create_from_element_list(method_name, matches) if matches.size > 1
       return create_from_element(matches[0]) {|child| define_child method_name, child }
     end
 
     def create_from_parent_with_attribute method_name, node
       if there_are_child_nodes?(node) and node_has_attributes?(node)
         match = node.attribute(method_name.to_s)
-        create_value(match) {|child| define_child method_name, child } unless match.nil?
+        create_value(match) {|child| define_child(method_name, child) } unless match.nil?
       end
     end
 
@@ -125,9 +122,9 @@ module Peachy
     end
 
     def create_from_element match, &block
-      return create_proxy match, &block if there_are_child_nodes?(match)
-      return create_proxy_with_attributes match, &block if node_has_attributes?(match)
-      return create_content_child match, &block
+      return create_proxy(match, &block) if there_are_child_nodes?(match)
+      return create_proxy_with_attributes(match, &block) if node_has_attributes?(match)
+      return create_content_child(match, &block)
     end
 
     def node_has_attributes? match
@@ -142,15 +139,15 @@ module Peachy
     end
 
     def create_value match, &block
-      create_child match.content, &block
+      create_child(match.content, &block)
     end
     
     def create_content_child match, &block
-      create_child SimpleContent.new(match.content, match.name), &block
+      create_child(SimpleContent.new(match.content, match.name), &block)
     end
 
     def create_proxy match, &block
-      create_child Proxy.new(match), &block
+      create_child(Proxy.new(match), &block)
     end
 
     def create_proxy_with_attributes match, &block
@@ -167,7 +164,7 @@ module Peachy
     end
 
     def define_method method_name, &block
-      eval_on_singleton_class { define_method method_name.to_sym, &block }
+      eval_on_singleton_class { define_method(method_name.to_sym, &block) }
       yield
     end
     

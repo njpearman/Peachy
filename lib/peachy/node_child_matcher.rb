@@ -1,8 +1,8 @@
 module Peachy
   module NodeChildMatcher
-    # Runs the xpath for the method name against the underlying XML DOM, raising
-    # a NoMatchingXmlPart if no element or attribute matching the method name is
-    # found in the children of the current location in the DOM.
+    # Runs the XPath for the method name against the underlying XML DOM,
+    # returning nil if no element or attribute matching the method name is found
+    # in the children of the current location in the DOM.
     def find_matches method_name, node #=nokogiri_node
       matches = node.xpath(xpath_for(method_name))
       return nil if matches.length < 1
