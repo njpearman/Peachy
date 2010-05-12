@@ -109,10 +109,7 @@ module Peachy
 
     def create_method_for_attribute method_name, node
       match = node.attribute(method_name.to_s)
-      unless match.nil?
-        value = ProxyFactory.create_value(match)
-        define_child(method_name, value)
-      end
+      define_child(method_name, match.content) unless match.nil?
     end
 
     def has_children_and_attributes?

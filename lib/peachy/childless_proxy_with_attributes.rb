@@ -11,8 +11,7 @@ module Peachy
       check_for_convention(method_name)
       match = find_match_by_attributes method_name
       raise NoMatchingXmlPart.new method_name, node_name if match.nil?
-      value = ProxyFactory.create_value(match)
-      define_child(method_name, value)
+      define_child(method_name, match.content)
     end
   end
 end

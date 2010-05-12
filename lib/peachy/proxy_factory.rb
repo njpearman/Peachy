@@ -18,10 +18,6 @@ module Peachy
         match.children.any? {|child| child.kind_of? Nokogiri::XML::Element }
       end
 
-      def create_value match
-        match.content
-      end
-
       def create_content_child match
         SimpleContent.new(match.content, match.name)
       end
