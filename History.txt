@@ -1,0 +1,7 @@
+== 0.2.0
+
+* Major improvements
+  * Can now treat only children as if they are the first element in an array.
+  * Console output is now configurable.
+  * Test specs are now included in gem.
+

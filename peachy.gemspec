@@ -9,17 +9,18 @@ Gem::Specification.new do |s|
   s.email = ["n.pearman@gmail.com"]
   s.description = <<DESCRIPTION
 Peachy is an XML slurper that sits on top of existing XML parsers.  It dynamically
-creates object-style hierachies for simple ingration of XML data sources.
+creates object-style hierachies for simple integration of XML data sources.
 DESCRIPTION
 
-  s.files = Dir.glob("{lib,spec}/**/*") + %w(README.rdoc)
+  s.files = Dir.glob("{lib,spec}/**/*") + %w(README.rdoc History.txt)
   s.extra_rdoc_files = ["README.rdoc"]
 
   s.homepage = "http://github.com/njpearman/peachy"
   s.rdoc_options = ["--main", "README.rdoc"]
   s.rubygems_version = "1.3.6"
-  s.summary = "Peachy gives a very simple object-style interface on top of an XML DOM."
-
+  s.summary = <<SUMMARY
+Peachy gives a very simple object-style interface on top of an XML DOM.
+SUMMARY
   s.add_runtime_dependency("nokogiri", [">= 1.3.3"])
 end
 
