@@ -103,12 +103,16 @@ module Peachy
 
     def create_method_for_child_or_content method_name, matches
       return create_from_element_list(method_name, matches) if matches.size > 1
-      return ProxyFactory.create_from_element(matches[0]) {|child| define_child(method_name, child) }
+      child = ProxyFactory.create_from_element(matches[0])
+      define_child(method_name, child)
     end
 
     def create_method_for_attribute method_name, node
       match = node.attribute(method_name.to_s)
-      ProxyFactory.create_value(match) {|child| define_child(method_name, child) } unless match.nil?
+      unless match.nil?
+        value = ProxyFactory.create_value(match)
+        define_child(method_name, value)
+      end
     end
 
     def has_children_and_attributes?
