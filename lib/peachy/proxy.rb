@@ -5,7 +5,7 @@ module Peachy
   class Proxy
     alias_method :original_method_missing, :method_missing
     extend MethodMask
-    include ConventionChecks, MorphIntoArray, MyMetaClass, NodeChildMatcher
+    include ConventionChecks, MorphIntoArray, MyMetaClass, XmlNode
 
     # This hides all public methods on the class except for 'methods', 'nil?'
     # 'respond_to?' and 'inspect', which I've found are too useful to hide for

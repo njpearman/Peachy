@@ -1,5 +1,5 @@
 module Peachy
-  module NodeChildMatcher
+  module XmlNode
     private
     # Runs the XPath for the method name against the underlying XML DOM,
     # returning nil if no element or attribute matching the method name is found
