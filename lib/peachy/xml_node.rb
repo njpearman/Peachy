@@ -15,6 +15,10 @@ module Peachy
       mapped.find {|match| match != nil }
     end
 
+    def has_children_and_attributes?
+      there_are_child_nodes?(node) and node_has_attributes?(node)
+    end
+
     # Determines whether the given element contains any child elements or not.
     # The choice of implementation is based on performance tests between using
     # XPath and a Ruby iterator.

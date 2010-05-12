@@ -112,10 +112,6 @@ module Peachy
       define_child(method_name, match.content) unless match.nil?
     end
 
-    def has_children_and_attributes?
-      there_are_child_nodes?(node) and node_has_attributes?(node)
-    end
-
     def create_from_element_list method_name, matches
         define_method(method_name) { return matches_to_array(matches) }
     end
