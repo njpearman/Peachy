@@ -11,6 +11,7 @@ require File.join(File.dirname(__FILE__), 'peachy/my_meta_class')
 require File.join(File.dirname(__FILE__), 'peachy/node_child_matcher')
 require File.join(File.dirname(__FILE__), 'peachy/simple_content')
 require File.join(File.dirname(__FILE__), 'peachy/proxy')
+require File.join(File.dirname(__FILE__), 'peachy/proxy_factory')
 require File.join(File.dirname(__FILE__), 'peachy/childless_proxy_with_attributes')
 
 module Peachy

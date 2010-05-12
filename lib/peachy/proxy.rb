@@ -84,7 +84,7 @@ module Peachy
       elsif array_can?(method_name)
         # if child doesn't exist, see if the call might be a zero-argument
         # Array call.
-        new_proxy = create_from_element(node)
+        new_proxy = ProxyFactory.create_from_element(node)
         morph_into_array(new_proxy, method_name)
       else
         # no matches, so throw
@@ -103,12 +103,12 @@ module Peachy
 
     def create_method_for_child_or_content method_name, matches
       return create_from_element_list(method_name, matches) if matches.size > 1
-      return create_from_element(matches[0]) {|child| define_child method_name, child }
+      return ProxyFactory.create_from_element(matches[0]) {|child| define_child(method_name, child) }
     end
 
     def create_method_for_attribute method_name, node
       match = node.attribute(method_name.to_s)
-      create_value(match) {|child| define_child(method_name, child) } unless match.nil?
+      ProxyFactory.create_value(match) {|child| define_child(method_name, child) } unless match.nil?
     end
 
     def has_children_and_attributes?
@@ -116,49 +116,11 @@ module Peachy
     end
 
     def create_from_element_list method_name, matches
-        define_method(method_name) { return matches_to_array matches }
+        define_method(method_name) { return matches_to_array(matches) }
     end
 
     def matches_to_array matches
-      matches.inject([]) {|array, child| array << create_from_element(child) }
-    end
-
-    def create_from_element match, &block
-      return create_proxy(match, &block) if there_are_child_nodes?(match)
-      return create_proxy_with_attributes(match, &block) if node_has_attributes?(match)
-      return create_content_child(match, &block)
-    end
-
-    def node_has_attributes? match
-      match.attribute_nodes.size > 0
-    end
-
-    # Determines whether the given element contains any child elements or not.
-    # The choice of implementation is based on performance tests between using
-    # XPath and a Ruby iterator.
-    def there_are_child_nodes? match
-      match.children.any? {|child| child.kind_of? Nokogiri::XML::Element }
-    end
-
-    def create_value match, &block
-      create_child(match.content, &block)
-    end
-    
-    def create_content_child match, &block
-      create_child(SimpleContent.new(match.content, match.name), &block)
-    end
-
-    def create_proxy match, &block
-      create_child(Proxy.new(match), &block)
-    end
-
-    def create_proxy_with_attributes match, &block
-      create_child ChildlessProxyWithAttributes.new(match), &block
-    end
-
-    def create_child child
-      yield child if block_given?
-      return child
+      matches.inject([]) {|array, child| array << ProxyFactory.create_from_element(child) }
     end
 
     def define_child method_name, child
@@ -175,7 +137,7 @@ module Peachy
     end
 
     def clone
-      create_from_element(node)
+      ProxyFactory.create_from_element(node)
     end
   end
 end
