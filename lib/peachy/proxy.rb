@@ -14,9 +14,9 @@ module Peachy
 
     # Takes either a string containing XML or a Nokogiri::XML::Element as the
     # single argument.
-    def initialize arguments
-      @xml = arguments if arguments.kind_of? String
-      @nokogiri_node = arguments if arguments.kind_of? Nokogiri::XML::Element
+    def initialize xml_node
+      @xml = xml_node if xml_node.kind_of? String
+      @nokogiri_node = xml_node if xml_node.kind_of? Nokogiri::XML::Element
     end
 
     # Overloaded so that calls to methods representative of an XML element or

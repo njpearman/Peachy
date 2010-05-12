@@ -1,8 +1,9 @@
 module Peachy
   class ChildlessProxyWithAttributes < Proxy
+    # Returns the text content of the XML node encapsulated by this instance.
     def value
       acts_as_only_child
-      @nokogiri_node.content
+      node.content
     end
 
     private
