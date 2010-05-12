@@ -84,7 +84,7 @@ module Peachy
       elsif array_can?(method_name)
         # if child doesn't exist, see if the call might be a zero-argument
         # Array call.
-        new_proxy = create_from_element(nokogiri_node)
+        new_proxy = create_from_element(node)
         morph_into_array(new_proxy, method_name)
       else
         # no matches, so throw
@@ -95,9 +95,9 @@ module Peachy
     private
     def generate_method_for_xml method_name
       check_for_convention(method_name)
-      attribute_content = create_from_parent_with_attribute(method_name, nokogiri_node)
+      attribute_content = create_method_for_attribute(method_name, node) if has_children_and_attributes?
       return attribute_content unless attribute_content.nil?
-      matches = find_matches(method_name, nokogiri_node)
+      matches = find_matches(method_name)
       matches.nil? ? nil : create_method_for_child_or_content(method_name, matches)
     end
 
@@ -106,11 +106,13 @@ module Peachy
       return create_from_element(matches[0]) {|child| define_child method_name, child }
     end
 
-    def create_from_parent_with_attribute method_name, node
-      if there_are_child_nodes?(node) and node_has_attributes?(node)
-        match = node.attribute(method_name.to_s)
-        create_value(match) {|child| define_child(method_name, child) } unless match.nil?
-      end
+    def create_method_for_attribute method_name, node
+      match = node.attribute(method_name.to_s)
+      create_value(match) {|child| define_child(method_name, child) } unless match.nil?
+    end
+
+    def has_children_and_attributes?
+      there_are_child_nodes?(node) and node_has_attributes?(node)
     end
 
     def create_from_element_list method_name, matches
@@ -172,17 +174,8 @@ module Peachy
       @xml.nil? and @nokogiri_node.nil?
     end
 
-    def node_name
-      nokogiri_node.name
-    end
-
-    def nokogiri_node
-      raise InvalidProxyParameters.new(:xml => nil, :nokogiri => nil) if variables_are_nil?
-      @nokogiri_node ||= Nokogiri::XML(@xml)
-    end
-
     def clone
-      create_from_element(nokogiri_node)
+      create_from_element(node)
     end
   end
 end
