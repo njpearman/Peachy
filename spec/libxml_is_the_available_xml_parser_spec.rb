@@ -5,17 +5,6 @@ describe Peachy::XmlParserFactory do
     @factory = Peachy::XmlParserFactory.new
   end
 
-  it "should return Nokogiri if Nokogiri is an available gem" do
-    parser_type = @factory.load_parser
-    parser_type.should == :nokogiri
-  end
-
-  it "should load Nokogiri if Nokogiri is an available gem" do
-    expectation = @factory.expects(:require).with('nokogiri').returns(true)
-    parser_type = @factory.load_parser
-    expectation.satisfied?.should == true
-  end
-
   it "should return LibXML if Nokogiri is not an available gem" do
     Gem.stubs(:available?).with('nokogiri').returns(false)
     Gem.stubs(:available?).with('libxml-ruby').returns(true)
