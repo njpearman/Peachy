@@ -1,6 +1,3 @@
-require 'rubygems'
-require 'nokogiri'
-
 module Peachy
   class Proxy
     alias_method :original_method_missing, :method_missing
