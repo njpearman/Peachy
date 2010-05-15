@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe "collections with children as arrays" do
   before(:each) do
     xml = <<STR

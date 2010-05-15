@@ -6,7 +6,7 @@ describe "nokogiri is the available XML parser" do
   end
 
   it "should check whether Nokogiri is available" do
-    expectation = Gem.expects(:available?).with('nokogiri').returns(true)
+    expectation = Gem.expects(:available?).with(/nokogiri/).returns(true)
     parser_type = @factory.load_parser
     expectation.satisfied?.should be_true
   end
