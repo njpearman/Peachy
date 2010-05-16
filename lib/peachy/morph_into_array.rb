@@ -3,7 +3,6 @@ module Peachy
     private
     def you_use_me_like_an_array method_name, block_given, *args
       return ((block_given or args.size > 0) and array_can?(method_name))
-      #method_name == :[] and args.one? and args.first == 0
     end
 
     def array_can? method_name

@@ -13,7 +13,7 @@ module Peachy
     # single argument.
     def initialize xml_node
       @xml = xml_node if xml_node.kind_of? String
-      @nokogiri_node = xml_node if xml_node.kind_of? Nokogiri::XML::Element
+      @nokogiri_node = xml_node if xml_node.kind_of? Peachy::Parsers::NokogiriWrapper #Nokogiri::XML::Element
     end
 
     # Overloaded so that calls to methods representative of an XML element or

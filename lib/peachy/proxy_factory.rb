@@ -15,7 +15,7 @@ module Peachy
       # The choice of implementation is based on performance tests between using
       # XPath and a Ruby iterator.
       def there_are_child_nodes? match
-        match.children.any? {|child| child.kind_of? Nokogiri::XML::Element }
+        match.children.any? {|child| child.kind_of? Peachy::Parsers::NokogiriWrapper } #Nokogiri::XML::Element }
       end
 
       def create_content_child match

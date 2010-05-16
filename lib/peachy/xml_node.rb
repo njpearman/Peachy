@@ -27,7 +27,8 @@ module Peachy
     # The choice of implementation is based on performance tests between using
     # XPath and a Ruby iterator.
     def there_are_child_nodes?
-      node.children.any? {|child| child.kind_of? Nokogiri::XML::Element }
+      #node.children.any? {|child| child.kind_of? Nokogiri::XML::Element }
+      node.children.any? {|child| child.kind_of? Peachy::Parsers::NokogiriWrapper }
     end
 
     def node_has_attributes?
@@ -52,7 +53,7 @@ module Peachy
     # variable.
     def node
       raise InvalidProxyParameters.new(:xml => nil, :nokogiri => nil) if variables_are_nil?
-      @nokogiri_node ||= Nokogiri::XML(@xml)
+      @nokogiri_node ||= Peachy::Parsers::NokogiriWrapper.new(Nokogiri::XML(@xml))
     end
   end
 end
