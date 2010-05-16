@@ -103,8 +103,12 @@ module Peachy
       define_child(method_name, child)
     end
 
-    def create_method_for_attribute method_name, node
-      match = node.attribute(method_name.to_s)
+    def create_attribute method_name
+      create_method_for_attribute(method_name) if has_children_and_attributes?
+    end
+
+    def create_method_for_attribute method_name
+      match = find_attribute(method_name.to_s)
       define_child(method_name, match.content) unless match.nil?
     end
 

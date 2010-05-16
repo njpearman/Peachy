@@ -1,10 +1,6 @@
 module Peachy
   module XmlNode
     private
-    def create_attribute method_name
-      create_method_for_attribute(method_name, node) if has_children_and_attributes?
-    end
-    
     # Runs the XPath for the method name against the underlying XML DOM,
     # returning nil if no element or attribute matching the method name is found
     # in the children of the current location in the DOM.
@@ -15,8 +11,12 @@ module Peachy
     end
 
     def find_match_by_attributes method_name
-      mapped = method_name.variations.map {|variation| node.attribute variation }
+      mapped = method_name.variations.map {|variation| node.attribute(variation) }
       mapped.find {|match| match != nil }
+    end
+
+    def find_attribute method_name
+      node.attribute(method_name.to_s)
     end
 
     def has_children_and_attributes?
