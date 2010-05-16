@@ -9,9 +9,7 @@ module Peachy
     private
     def generate_method_for_xml method_name
       check_for_convention(method_name)
-      match = find_match_by_attributes method_name
-      raise NoMatchingXmlPart.new method_name, node_name if match.nil?
-      define_child(method_name, match.content)
+      create_method_for_attribute(method_name) {|match| no_matching_xml(method_name) if match.nil? }
     end
   end
 end

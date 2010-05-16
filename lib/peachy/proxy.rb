@@ -83,8 +83,7 @@ module Peachy
         new_proxy = ProxyFactory.create_from_element(node)
         morph_into_array(new_proxy, method_name)
       else
-        # no matches, so throw
-        raise NoMatchingXmlPart.new(method_name, node_name)
+        no_matching_xml(method_name)
       end
     end
 
@@ -108,7 +107,8 @@ module Peachy
     end
 
     def create_method_for_attribute method_name
-      match = find_attribute(method_name.to_s)
+      match = find_match_by_attributes(method_name)
+      yield match if block_given?
       define_child(method_name, match.content) unless match.nil?
     end
 
@@ -131,6 +131,10 @@ module Peachy
     
     def variables_are_nil?
       @xml.nil? and @nokogiri_node.nil?
+    end
+
+    def no_matching_xml method_name
+      raise NoMatchingXmlPart.new(method_name, node_name)
     end
   end
 end
