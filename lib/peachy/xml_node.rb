@@ -1,6 +1,10 @@
 module Peachy
   module XmlNode
     private
+    def create_attribute method_name
+      create_method_for_attribute(method_name, node) if has_children_and_attributes?
+    end
+    
     # Runs the XPath for the method name against the underlying XML DOM,
     # returning nil if no element or attribute matching the method name is found
     # in the children of the current location in the DOM.
@@ -16,23 +20,27 @@ module Peachy
     end
 
     def has_children_and_attributes?
-      there_are_child_nodes?(node) and node_has_attributes?(node)
+      there_are_child_nodes? and node_has_attributes?
     end
 
     # Determines whether the given element contains any child elements or not.
     # The choice of implementation is based on performance tests between using
     # XPath and a Ruby iterator.
-    def there_are_child_nodes? match
-      match.children.any? {|child| child.kind_of? Nokogiri::XML::Element }
+    def there_are_child_nodes?
+      node.children.any? {|child| child.kind_of? Nokogiri::XML::Element }
     end
 
-    def node_has_attributes? match
-      match.attribute_nodes.size > 0
+    def node_has_attributes?
+      node.attribute_nodes.size > 0
     end
 
     # Gets the XPath for all variations of the MethodName instance
     def xpath_for method_name
       method_name.variations.map {|variation| "./#{variation}" } * '|'
+    end
+
+    def clone
+      ProxyFactory.create_from_element(node)
     end
 
     # Returns the name of the encapsulated node.

@@ -79,8 +79,7 @@ module Peachy
         acts_as_only_child
         child_proxy
       elsif array_can?(method_name)
-        # if child doesn't exist, see if the call might be a zero-argument
-        # Array call.
+        # morph into an array, as method is a zero-length array call
         new_proxy = ProxyFactory.create_from_element(node)
         morph_into_array(new_proxy, method_name)
       else
@@ -92,7 +91,7 @@ module Peachy
     private
     def generate_method_for_xml method_name
       check_for_convention(method_name)
-      attribute_content = create_method_for_attribute(method_name, node) if has_children_and_attributes?
+      attribute_content = create_attribute method_name
       return attribute_content unless attribute_content.nil?
       matches = find_matches(method_name)
       matches.nil? ? nil : create_method_for_child_or_content(method_name, matches)
@@ -128,10 +127,6 @@ module Peachy
     
     def variables_are_nil?
       @xml.nil? and @nokogiri_node.nil?
-    end
-
-    def clone
-      ProxyFactory.create_from_element(node)
     end
   end
 end
