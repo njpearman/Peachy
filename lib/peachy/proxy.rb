@@ -92,7 +92,7 @@ module Peachy
       check_for_convention(method_name)
       attribute_content = create_attribute method_name
       return attribute_content unless attribute_content.nil?
-      matches = find_matches(method_name)
+      matches = node.find_matches(method_name)
       matches.nil? ? nil : create_method_for_child_or_content(method_name, matches)
     end
 
@@ -103,11 +103,11 @@ module Peachy
     end
 
     def create_attribute method_name
-      create_method_for_attribute(method_name) if has_children_and_attributes?
+      create_method_for_attribute(method_name) if node.has_children_and_attributes?
     end
 
     def create_method_for_attribute method_name
-      match = find_match_by_attributes(method_name)
+      match = node.find_match_by_attributes(method_name)
       yield match if block_given?
       define_child(method_name, match.content) unless match.nil?
     end

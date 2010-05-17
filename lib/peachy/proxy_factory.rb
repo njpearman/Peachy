@@ -8,14 +8,14 @@ module Peachy
       end
 
       def node_has_attributes? match
-        match.attribute_nodes.size > 0
+        match.node_has_attributes?
       end
 
       # Determines whether the given element contains any child elements or not.
       # The choice of implementation is based on performance tests between using
       # XPath and a Ruby iterator.
       def there_are_child_nodes? match
-        match.children.any? {|child| child.kind_of? Peachy::Parsers::NokogiriWrapper } #Nokogiri::XML::Element }
+        match.there_are_child_nodes?
       end
 
       def create_content_child match

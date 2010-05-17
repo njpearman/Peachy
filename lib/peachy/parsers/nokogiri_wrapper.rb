@@ -5,17 +5,37 @@ module Peachy
         @nokogiri = nokogiri
       end
 
-      def attribute attribute_name
-        noko = @nokogiri.attribute(attribute_name)
-        noko.nil?? nil : NokogiriWrapper.new(noko)
+      # Runs the XPath for the method name against the underlying XML DOM,
+      # returning nil if no element or attribute matching the method name is found
+      # in the children of the current location in the DOM.
+      def find_matches method_name
+        matches = xpath(xpath_for(method_name))
+        return nil if matches.length < 1
+        return matches
       end
 
-      def attribute_nodes
-        @nokogiri.attribute_nodes.map {|attribute| attribute.content }
+      def find_match_by_attributes method_name
+        mapped = method_name.variations.map {|variation| attribute(variation) }
+        mapped.find {|match| match != nil }
       end
 
-      def children
-        @nokogiri.children.map {|child| NokogiriWrapper.new(child) if child.kind_of? Nokogiri::XML::Element }
+      def find_attribute method_name
+        attribute(method_name.to_s)
+      end
+
+      def has_children_and_attributes?
+        there_are_child_nodes? and node_has_attributes?
+      end
+
+      # Determines whether the given element contains any child elements or not.
+      # The choice of implementation is based on performance tests between using
+      # XPath and a Ruby iterator.
+      def there_are_child_nodes?
+        children.any? {|child| child.kind_of? Peachy::Parsers::NokogiriWrapper }
+      end
+
+      def node_has_attributes?
+        attribute_nodes.size > 0
       end
 
       def content
@@ -26,8 +46,27 @@ module Peachy
         @nokogiri.name
       end
 
+      private
+      def attribute_nodes
+        @nokogiri.attribute_nodes.map {|attribute| attribute.content }
+      end
+
+      def children
+        @nokogiri.children.map {|child| NokogiriWrapper.new(child) if child.kind_of? Nokogiri::XML::Element }
+      end
+
+      # Gets the XPath for all variations of the MethodName instance
+      def xpath_for method_name
+        method_name.variations.map {|variation| "./#{variation}" } * '|'
+      end
+
       def xpath xpath
         @nokogiri.xpath(xpath).map{|noko_node| NokogiriWrapper.new(noko_node) }
+      end
+
+      def attribute attribute_name
+        noko = @nokogiri.attribute(attribute_name)
+        noko.nil?? nil : NokogiriWrapper.new(noko)
       end
     end
   end
