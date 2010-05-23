@@ -17,8 +17,10 @@ module Peachy
       end
 
       def find_match_by_attributes method_name
-        mapped = method_name.variations.map {|variation| attribute(variation) }
-        mapped.find {|match| match != nil }
+        match = @nokogiri.attribute_nodes.find do |attribute|
+          attribute if method_name.variations.include? attribute.name
+        end
+        match.nil? ? nil : make_from(match)
       end
 
       def has_children_and_attributes?
@@ -33,7 +35,7 @@ module Peachy
       end
 
       def has_attributes?
-        attribute_nodes.size > 0
+        @nokogiri.attribute_nodes.size > 0
       end
 
       def content
@@ -45,21 +47,12 @@ module Peachy
       end
 
       private
-      def attribute_nodes
-        @nokogiri.attribute_nodes.map {|attribute| attribute.content }
-      end
-
       def children
         @nokogiri.children.map {|child| make_from(child) if child.kind_of? Nokogiri::XML::Element }
       end
 
       def xpath xpath
         @nokogiri.xpath(xpath).map{|noko_node| make_from(noko_node) }
-      end
-
-      def attribute attribute_name
-        noko = @nokogiri.attribute(attribute_name)
-        noko.nil? ? nil : make_from(noko)
       end
 
       def make_from child
