@@ -1,6 +1,8 @@
 module Peachy
   module Parsers
     class NokogiriWrapper
+      include WithXPath
+      
       def initialize nokogiri
         @nokogiri = nokogiri
       end
@@ -49,11 +51,6 @@ module Peachy
 
       def children
         @nokogiri.children.map {|child| make_from(child) if child.kind_of? Nokogiri::XML::Element }
-      end
-
-      # Gets the XPath for all variations of the MethodName instance
-      def xpath_for method_name
-        method_name.variations.map {|variation| "./#{variation}" } * '|'
       end
 
       def xpath xpath
