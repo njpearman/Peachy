@@ -19,10 +19,6 @@ module Peachy
         mapped.find {|match| match != nil }
       end
 
-      def find_attribute method_name
-        attribute(method_name.to_s)
-      end
-
       def has_children_and_attributes?
         has_children? and has_attributes?
       end
@@ -66,7 +62,7 @@ module Peachy
 
       def attribute attribute_name
         noko = @nokogiri.attribute(attribute_name)
-        noko.nil?? nil : make_from(noko)
+        noko.nil? ? nil : make_from(noko)
       end
 
       def make_from child

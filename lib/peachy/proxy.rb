@@ -113,7 +113,7 @@ module Peachy
     end
 
     def create_from_element_list method_name, matches
-        define_method(method_name) { return matches_to_array(matches) }
+      define_method(method_name) { return matches_to_array(matches) }
     end
 
     def matches_to_array matches
