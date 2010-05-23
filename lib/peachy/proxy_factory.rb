@@ -2,20 +2,9 @@ module Peachy
   class ProxyFactory
     class << self
       def create_from_element match
-        return create_proxy(match) if there_are_child_nodes?(match)
-        return create_proxy_with_attributes(match) if node_has_attributes?(match)
+        return create_proxy(match) if match.has_children?
+        return create_proxy_with_attributes(match) if match.has_attributes?
         return create_content_child(match)
-      end
-
-      def node_has_attributes? match
-        match.node_has_attributes?
-      end
-
-      # Determines whether the given element contains any child elements or not.
-      # The choice of implementation is based on performance tests between using
-      # XPath and a Ruby iterator.
-      def there_are_child_nodes? match
-        match.there_are_child_nodes?
       end
 
       def create_content_child match

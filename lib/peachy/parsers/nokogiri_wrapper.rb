@@ -24,17 +24,17 @@ module Peachy
       end
 
       def has_children_and_attributes?
-        there_are_child_nodes? and node_has_attributes?
+        has_children? and has_attributes?
       end
 
       # Determines whether the given element contains any child elements or not.
       # The choice of implementation is based on performance tests between using
       # XPath and a Ruby iterator.
-      def there_are_child_nodes?
+      def has_children?
         children.any? {|child| child.kind_of? Peachy::Parsers::NokogiriWrapper }
       end
 
-      def node_has_attributes?
+      def has_attributes?
         attribute_nodes.size > 0
       end
 
@@ -52,7 +52,7 @@ module Peachy
       end
 
       def children
-        @nokogiri.children.map {|child| NokogiriWrapper.new(child) if child.kind_of? Nokogiri::XML::Element }
+        @nokogiri.children.map {|child| make_from(child) if child.kind_of? Nokogiri::XML::Element }
       end
 
       # Gets the XPath for all variations of the MethodName instance
@@ -61,12 +61,16 @@ module Peachy
       end
 
       def xpath xpath
-        @nokogiri.xpath(xpath).map{|noko_node| NokogiriWrapper.new(noko_node) }
+        @nokogiri.xpath(xpath).map{|noko_node| make_from(noko_node) }
       end
 
       def attribute attribute_name
         noko = @nokogiri.attribute(attribute_name)
-        noko.nil?? nil : NokogiriWrapper.new(noko)
+        noko.nil?? nil : make_from(noko)
+      end
+
+      def make_from child
+        NokogiriWrapper.new(child)
       end
     end
   end
