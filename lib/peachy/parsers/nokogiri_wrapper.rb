@@ -12,8 +12,7 @@ module Peachy
       # in the children of the current location in the DOM.
       def find_matches method_name
         matches = xpath(xpath_for(method_name))
-        return nil if matches.length < 1
-        return matches
+        matches.any? ? matches : nil
       end
 
       def find_match_by_attributes method_name
@@ -31,7 +30,7 @@ module Peachy
       # The choice of implementation is based on performance tests between using
       # XPath and a Ruby iterator.
       def has_children?
-        children.any? {|child| child.kind_of? Peachy::Parsers::NokogiriWrapper }
+        @nokogiri.children.any? {|child| child.kind_of? Nokogiri::XML::Element }
       end
 
       def has_attributes?
@@ -47,10 +46,6 @@ module Peachy
       end
 
       private
-      def children
-        @nokogiri.children.map {|child| make_from(child) if child.kind_of? Nokogiri::XML::Element }
-      end
-
       def xpath xpath
         @nokogiri.xpath(xpath).map{|noko_node| make_from(noko_node) }
       end
