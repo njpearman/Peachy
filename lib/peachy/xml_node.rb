@@ -14,7 +14,7 @@ module Peachy
     # variable.
     def node
       raise InvalidProxyParameters.new(:xml => nil, :nokogiri => nil) if variables_are_nil?
-      @nokogiri_node ||= Peachy::Parsers::NokogiriWrapper.new(Nokogiri::XML(@xml))
+      @node ||= Peachy::Parsers::NokogiriWrapper.new(Nokogiri::XML(@xml))
     end
   end
 end
