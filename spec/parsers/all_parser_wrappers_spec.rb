@@ -5,6 +5,7 @@ shared_examples_for "all parser wrappers" do
     matches = @wrapper.find_matches(Peachy::MethodName.new('child'))
     matches.size.should == 1
     matches[0].name.should == 'child'
+    matches[0].content.should == 'Name'
     matches[0].should be_a @expected_wrapper_class
   end
 

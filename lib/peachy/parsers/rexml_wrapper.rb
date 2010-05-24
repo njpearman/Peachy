@@ -30,6 +30,10 @@ module Peachy
         has_children? and has_attributes?
       end
 
+      def content
+        @rexml.text
+      end
+
       def name
         @rexml.name
       end
