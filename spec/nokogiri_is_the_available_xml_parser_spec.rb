@@ -28,5 +28,12 @@ describe "nokogiri is the available XML parser" do
     parser_type = @factory.load_parser
     expectation.satisfied?.should be_true
   end
+
+  it "should create a NokogiriWrapper from xml" do
+    @factory.load_parser
+    wrapper = @factory.make_from '<thing>Stuff</thing>'
+    wrapper.should be_a Peachy::Parsers::NokogiriWrapper
+    wrapper.content.should == 'Stuff'
+  end
 end
 
