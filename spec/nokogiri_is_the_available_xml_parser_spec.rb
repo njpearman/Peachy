@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "nokogiri is the available XML parser" do
   before(:each) do
-    @factory = Peachy::XmlParserFactory.new
+    @factory = Peachy::Parsers::ParserFactory.new
     expectation = @factory.stubs(:require).with('nokogiri').returns(true)
   end
 

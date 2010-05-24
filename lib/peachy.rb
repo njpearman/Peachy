@@ -23,7 +23,7 @@ require File.join(File.dirname(__FILE__), 'peachy/proxy_factory')
 require File.join(File.dirname(__FILE__), 'peachy/childless_proxy_with_attributes')
 
 # first up, load the underlying XML parser that Peachy will use
-Peachy::XmlParserFactory.new.load_parser
+Peachy::Parsers::ParserFactory.new.load_parser
 
 module Peachy
   def self.whine

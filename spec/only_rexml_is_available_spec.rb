@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "only REXML is available" do
   before(:each) do
-    @factory = Peachy::XmlParserFactory.new
+    @factory = Peachy::Parsers::ParserFactory.new
     @factory.stubs(:require).with('rexml/document').returns(true)
     Gem.stubs(:available?).with(/nokogiri/).returns(false)
   end
