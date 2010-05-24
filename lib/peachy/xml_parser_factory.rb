@@ -2,8 +2,8 @@ module Peachy
   class XmlParserFactory
     def load_parser
       return load_up(:nokogiri) if Gem.available? /nokogiri/
-      return load_up(:libxml) if Gem.available? /libxml/
-      raise NoXmlParserAvailable.new
+      require('rexml/document')
+      return :rexml
     end
 
     private
