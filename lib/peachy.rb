@@ -32,4 +32,16 @@ module Peachy
   def self.whiny?
     return @whine
   end
+
+  def self.proxy xml
+    create_factory unless defined? @factory
+    return Proxy.new(@factory.make_from(xml))
+  end
+
+  private
+  def self.create_factory
+    @factory ||= Peachy::Parsers::ParserFactory.new
+    @factory.load_parser
+    return @factory
+  end
 end
