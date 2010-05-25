@@ -18,7 +18,14 @@ module Peachy
     end
 
     def create
-      Peachy::Parsers::NokogiriWrapper.new(Nokogiri::XML(@xml))
+      load_factory unless defined? @factory
+      @factory.make_from @xml
+    end
+
+    private
+    def load_factory
+      @factory = Peachy::Parsers::ParserFactory.new
+      @factory.load_parser
     end
   end
 end

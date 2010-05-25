@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'nokogiri'
 
 describe "nokogiri is the available XML parser" do
   before(:each) do

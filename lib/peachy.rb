@@ -14,6 +14,7 @@ require File.join(File.dirname(__FILE__), 'peachy/xml_node')
 require File.join(File.dirname(__FILE__), 'peachy/simple_content')
 require File.join(File.dirname(__FILE__), 'peachy/parsers/parser_factory')
 require File.join(File.dirname(__FILE__), 'peachy/parsers/with_xpath')
+require File.join(File.dirname(__FILE__), 'peachy/parsers/parser_wrapper')
 require File.join(File.dirname(__FILE__), 'peachy/parsers/nokogiri_wrapper')
 require File.join(File.dirname(__FILE__), 'peachy/parsers/rexml_wrapper')
 require File.join(File.dirname(__FILE__), 'peachy/parsers/rexml_attribute_wrapper')
@@ -22,7 +23,6 @@ require File.join(File.dirname(__FILE__), 'peachy/proxy_factory')
 require File.join(File.dirname(__FILE__), 'peachy/childless_proxy_with_attributes')
 
 # first up, load the underlying XML parser that Peachy will use
-Peachy::Parsers::ParserFactory.new.load_parser
 
 module Peachy
   def self.whine

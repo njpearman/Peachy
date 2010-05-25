@@ -1,11 +1,12 @@
 require 'spec_helper'
+
 describe "interpreting element and attribute names that are defined in PascalCase" do
   before(:each) do
     @proxy = Peachy::Proxy.new <<XML
 <Root>
   <TestNode>Check meh.</TestNode>
   <SecondNode Id="2" RecordLabel="Wall of Sound">Check meh, too.</SecondNode>
-  <ThirdNode Id="2" RecordLabel="Wall of Sound"><Child>Check meh again.</Child></SecondNode>
+  <ThirdNode Id="2" RecordLabel="Wall of Sound"><Child>Check meh again.</Child></ThirdNode>
 </Root>
 XML
   end

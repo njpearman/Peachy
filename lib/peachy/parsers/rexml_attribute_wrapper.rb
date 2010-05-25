@@ -1,6 +1,6 @@
 module Peachy
   module Parsers
-    class REXMLAttributeWrapper
+    class REXMLAttributeWrapper < ParserWrapper
       def initialize array
         @attribute = array
       end

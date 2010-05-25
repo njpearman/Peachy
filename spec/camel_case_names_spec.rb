@@ -5,7 +5,7 @@ describe "interpreting element and attribute names that are defined in camelCase
 <root>
   <testNode>Check meh.</testNode>
   <secondNode id="2" recordLabel="Wall of Sound">Check meh, too.</secondNode>
-  <thirdNode id="2" recordLabel="Wall of Sound"><child>Nested</child></secondNode>
+  <thirdNode id="2" recordLabel="Wall of Sound"><child>Nested</child></thirdNode>
 </root>
 XML
   end

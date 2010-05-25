@@ -1,6 +1,6 @@
 module Peachy
   module Parsers
-    class REXMLWrapper
+    class REXMLWrapper < ParserWrapper
       include WithXPath
 
       def initialize rexml_element

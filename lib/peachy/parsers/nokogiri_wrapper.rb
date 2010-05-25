@@ -1,6 +1,6 @@
 module Peachy
   module Parsers
-    class NokogiriWrapper
+    class NokogiriWrapper < ParserWrapper
       include WithXPath
       
       def initialize nokogiri

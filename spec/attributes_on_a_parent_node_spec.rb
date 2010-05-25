@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "attributes on a parent node" do
   before(:each) do
-    @proxy = Peachy::Proxy.new '<root><test_node name="Test"><child>Check meh.</child><test_node></root>'
+    @proxy = Peachy::Proxy.new '<root><test_node name="Test"><child>Check meh.</child></test_node></root>'
   end
 
   it "should return the child when accessing it by name" do
