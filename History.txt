@@ -1,3 +1,22 @@
+== 0.3.0
+
+* Major improvements
+  * No longer hard-wired to Nokogiri, determining which XML parser is available
+    at first usage, defaulting to REXML if Nokogiri is not found.
+
+* Minor improvements
+  * Improved implementation of NokogiriWrapper.
+
+
+== 0.2.1
+
+* Major improvements
+  * Actually a breaking change from previous version, introducing NokogiriWrapper.
+    It's no longer possible to pass a Nokogiri node directly into Peachy.
+  * Only children can now be treated as if they are arrays in any way, morphing into
+    an array if treated as an array.
+
+
 == 0.2.0
 
 * Major improvements

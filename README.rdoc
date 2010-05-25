@@ -14,17 +14,13 @@ then
 
     require 'peachy'
 
-in irb/your codebase to get going.
+in irb / your codebase to get going.
 
 == Usage
 The Peachy::Proxy is the key class in Peachy.  Create a new instance of a
-Peachy::Proxy passing in either a raw XML string, or a Nokogiri::XML instance
+Peachy::Proxy by passing in a raw XML string
 
     proxy = Peachy::Proxy.new('<xml><node>Peachy</node></xml>')
-
-or
-
-    proxy = Peachy::Proxy.new(Nokogiri::XML('<xml><node>Peachy</node></xml>'))
 
 Once you have a Proxy, it's straightforward to drill down through the XML by
 node name:
@@ -43,8 +39,10 @@ More detailed usage examples can be found in the .rb files in the /test director
 
 === XML parsing
 
-Currently, Peachy is hard wired to use Nokogiri for XML parsing, but this will
-be abstracted out at some point.
+Peachy tries to determine which XML parser to load when it is first used.  Nokogiri
+is currently the first choice, defaulting to REXML if Nokogiri is not available.
+It's possible to extend this out so let me know if there are any other XML parsers
+that you'd like Peachy to support.
 
 === Elements and Attributes
 
