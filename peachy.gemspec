@@ -17,7 +17,7 @@ DESCRIPTION
 
   s.homepage = "http://github.com/njpearman/peachy"
   s.rdoc_options = ["--main", "README.rdoc"]
-  #s.required_ruby_version = ">= 1.8.7"
+  s.required_ruby_version = ">= 1.8.7"
   s.rubygems_version = "1.3.6"
   s.summary = <<SUMMARY
 Peachy gives a very simple object-style interface on top of an XML DOM.
