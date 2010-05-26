@@ -1,6 +1,6 @@
 class MethodNotInRubyConvention < Exception
   def initialize method_name
-    super(MessageTemplate.gsub /method_name/, method_name.to_s)
+    super(MessageTemplate.gsub(/method_name/, method_name.to_s))
   end
 
   private
