@@ -1,3 +1,8 @@
+== 0.3.1
+* Minor improvements
+  * Should now work on 1.8.6, so removed minimum rqeuirement of Ruby version 1.8.7
+  * Tweaked some implementation details.
+
 == 0.3.0
 
 * Major improvements
