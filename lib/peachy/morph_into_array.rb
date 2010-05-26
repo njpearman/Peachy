@@ -10,13 +10,8 @@ module Peachy
     end
 
     def mimic object_to_mimic
-      eval_on_singleton_class do
-        # NetBeans complains about this syntax, but it's fine.
-        define_method(:method_missing) do |method_name, *args, &block|
-          puts "[Peachy::Proxy] #{node_name} can only do '#{method_name}' with '#{args}' if an Array can.  You see, really, #{node_name} is an array now." if Peachy.whiny?
-          return object_to_mimic.send(method_name, *args, &block)
-        end
-      end
+      @mimicked = object_to_mimic
+      eval_on_singleton_class { include Mimic }
     end
 
     def morph_into_array to_add_to_array, method_to_invoke, *args, &block
