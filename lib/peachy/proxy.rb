@@ -1,6 +1,5 @@
 module Peachy
   class Proxy
-    alias_method :original_method_missing, :method_missing
     extend MethodMask
     include ConventionChecks, MorphIntoArray, MyMetaClass, XmlNode
 
@@ -69,7 +68,7 @@ module Peachy
       end
 
       # standard method_missing for any other call with arguments or a block
-      original_method_missing method_name, args if args.any? or block_given?
+      super if args.any? or block_given?
 
       # try to create a method for the element
       child_proxy = generate_method_for_xml(MethodName.new(method_name))
