@@ -10,8 +10,10 @@ module Peachy
     end
 
     def mimic object_to_mimic
-      @mimicked = object_to_mimic
-      eval_on_singleton_class { include Mimic }
+      eval_on_singleton_class do
+        define_method(:mimic) { object_to_mimic }
+        include Mimic
+      end
     end
 
     def morph_into_array to_add_to_array, method_to_invoke, *args, &block

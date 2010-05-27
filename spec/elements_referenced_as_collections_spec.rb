@@ -27,7 +27,6 @@ XML
 
     element_as_array = @proxy.xml.list.item
     element_as_array.any?.should be_true
-    element_as_array.one?.should be_true
     element_as_array.empty?.should be_false
     element_as_array.size.should == 1
     (element_as_array.map {|item| item.child.value }).should == ['one']
