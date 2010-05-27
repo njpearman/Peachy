@@ -16,7 +16,7 @@ XML
 
   it "should define a method from a camel cased element name" do
     @proxy.root.test_node.value.should == 'Check meh.'
-    @proxy.root.methods.should include 'test_node'
+    @proxy.root.methods.should include('test_node')
   end
 
   it "should match a method to an attribute by camel case" do
@@ -25,12 +25,12 @@ XML
 
   it "should define a method from camel cased attribute name" do
     @proxy.root.second_node.record_label
-    @proxy.root.second_node.methods.should include 'record_label'
+    @proxy.root.second_node.methods.should include('record_label')
   end
 
   it "should match parent attribute names" do
     @proxy.root.third_node.record_label.should == 'Wall of Sound'
-    @proxy.root.third_node.methods.should include 'record_label'
+    @proxy.root.third_node.methods.should include('record_label')
   end
 end
 

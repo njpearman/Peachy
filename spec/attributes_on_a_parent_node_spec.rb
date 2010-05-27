@@ -15,10 +15,10 @@ describe "attributes on a parent node" do
 
   it "should define the attribute name as a method" do
     @proxy.root.test_node.name
-    @proxy.root.test_node.methods.should include 'name'
+    @proxy.root.test_node.methods.should include('name')
   end
 
   it "should raise an error if the attirbute does not exist" do
-    lambda { @proxy.root.test_node.other }.should raise_error NoMatchingXmlPart
+    lambda { @proxy.root.test_node.other }.should raise_error(NoMatchingXmlPart)
   end
 end

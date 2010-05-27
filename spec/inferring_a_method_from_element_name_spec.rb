@@ -7,11 +7,11 @@ describe "inferring a method from an element name" do
   end
 
   it "should defer method_missing to the base class implementation if arguments are passed with the missing method" do
-    lambda { @proxy.my_call "argument" }.should raise_error NoMethodError
+    lambda { @proxy.my_call "argument" }.should raise_error(NoMethodError)
   end
 
   it "should defer method_missing to the base class implementation if block is given with method_missing" do
-    lambda { @proxy.my_call() { puts "Blockhead." } }.should raise_error NoMethodError
+    lambda { @proxy.my_call() { puts "Blockhead." } }.should raise_error(NoMethodError)
   end
 
   it "should not expose the original method_missing alias publically" do
@@ -25,8 +25,8 @@ describe "inferring a method from an element name" do
 
   it 'should define the method on an instance, not on the class' do
     @proxy.testnode
-    @proxy.methods.should include 'testnode'
-    @another_proxy.methods.should_not include 'testnode'
+    @proxy.methods.should include('testnode')
+    @another_proxy.methods.should_not include('testnode')
   end
 
   it "should return the node contents when the node isn't defined as a method and the contents of the node is at the lowest point of the tree" do

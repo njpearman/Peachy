@@ -9,7 +9,7 @@ describe "using a Mimic" do
   end
 
   it "should raise an error if the mimic method has not been overridden" do
-    lambda { @mimic.mimic }.should raise_error NothingToMimic
+    lambda { @mimic.mimic }.should raise_error(NothingToMimic)
   end
   
   it "should call the underlying object" do
