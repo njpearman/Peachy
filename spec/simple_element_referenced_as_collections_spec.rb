@@ -19,7 +19,6 @@ XML
 
     element_as_array = @proxy.xml.list.item
     element_as_array.any?.should be_true
-    element_as_array.one?.should be_true
     element_as_array.empty?.should be_false
     element_as_array.size.should == 1
     (element_as_array.map {|item| item.value }).should == ['Hello']
@@ -27,10 +26,11 @@ XML
   end
 
   it "should raise an error if the element value has already been accessed as an only child" do
-    @proxy.xml.list.item.value
-    lambda { @proxy.xml.list.item[0] }.should raise_error AlreadyAnOnlyChild, <<MSG
+    expected_message = <<MSG
 The 'item' node has already been accessed as a single child, but you are now trying to use it as a collection.
 Do not try to access Peachy::Proxies in a mixed manner in your implementation.
 MSG
+    @proxy.xml.list.item.value
+    lambda { @proxy.xml.list.item[0] }.should raise_error(AlreadyAnOnlyChild, expected_message)
   end
 end

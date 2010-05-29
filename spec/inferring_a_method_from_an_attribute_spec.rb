@@ -13,11 +13,11 @@ describe "inferring a method from an attribute" do
 
   it "should define a method for the attribute name" do
     @proxy.test_node.another
-    @proxy.test_node.methods.should include 'another'
+    @proxy.test_node.methods.should include('another')
   end
 
   it "should raise an error if method name doesn't match an attribute name" do
-    lambda { @proxy.test_node.missing }.should raise_error NoMatchingXmlPart, "missing is not contained as a child of the node test-node."
+    lambda { @proxy.test_node.missing }.should raise_error(NoMatchingXmlPart, "missing is not contained as a child of the node test-node.")
   end
 end
 

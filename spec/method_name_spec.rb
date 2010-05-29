@@ -18,10 +18,10 @@ describe "how to use Peachy::MethodName" do
   it "should return the expected variation formats" do
     variations = @method_name.variations
 
-    variations.should include 'method_name'
-    variations.should include 'methodName'
-    variations.should include 'method-name'
-    variations.should include 'MethodName'
+    variations.should include('method_name')
+    variations.should include('methodName')
+    variations.should include('method-name')
+    variations.should include('MethodName')
   end
 
   it "should be possible to create a MethodName from a symbol" do
@@ -31,10 +31,10 @@ describe "how to use Peachy::MethodName" do
     @method_name.to_s.should == 'this_method'
     @method_name.to_sym.should == :this_method
     
-    variations.should include 'this_method'
-    variations.should include 'thisMethod'
-    variations.should include 'this-method'
-    variations.should include 'ThisMethod'
+    variations.should include('this_method')
+    variations.should include('thisMethod')
+    variations.should include('this-method')
+    variations.should include('ThisMethod')
   end
 
   it "should not include duplicates in variations" do
@@ -42,8 +42,8 @@ describe "how to use Peachy::MethodName" do
     variations = @method_name.variations
 
     variations.size.should == 2
-    variations.should include 'method'
-    variations.should include 'Method'
+    variations.should include('method')
+    variations.should include('Method')
   end
 end
 

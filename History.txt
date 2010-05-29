@@ -1,3 +1,8 @@
+== 0.3.2
+* Minor improvements
+  * Better support for Ruby 1.8.6
+  * Better implementation of MorphIntoArray, which introduced the Mimic module.
+
 == 0.3.1
 * Minor improvements
   * Should now work on 1.8.6, so removed minimum rqeuirement of Ruby version 1.8.7
@@ -12,7 +17,6 @@
 * Minor improvements
   * Improved implementation of NokogiriWrapper.
 
-
 == 0.2.1
 
 * Major improvements
@@ -21,11 +25,9 @@
   * Only children can now be treated as if they are arrays in any way, morphing into
     an array if treated as an array.
 
-
 == 0.2.0
 
 * Major improvements
   * Can now treat only children as if they are the first element in an array.
   * Console output is now configurable.
   * Test specs are now included in gem.
-

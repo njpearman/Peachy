@@ -26,7 +26,7 @@ STR
 
   it "should define a method for the name of the list items" do
     @peachy_proxy.xml.list.item
-    @peachy_proxy.xml.list.methods.should include 'item'
+    @peachy_proxy.xml.list.methods.should include('item')
   end
 
   it "should create the children as expected" do

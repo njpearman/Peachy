@@ -11,8 +11,8 @@ describe "nodes with multiple children should be handled correctly" do
   it "should define a method with the child name on the proxy" do
     @node_to_test.child
     @node_to_test.second_child
-    @node_to_test.methods.should include 'child'
-    @node_to_test.methods.should include 'second_child'
+    @node_to_test.methods.should include('child')
+    @node_to_test.methods.should include('second_child')
   end
 
   it "should recurse the Proxy to ancestors so that a child will have the correct value" do
