@@ -8,7 +8,7 @@ module Peachy
       end
 
       def create_content_child match
-        SimpleContent.new(match.content, match.name)
+        SimpleContent.new(match)
       end
 
       def create_proxy match
