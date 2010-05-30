@@ -15,6 +15,11 @@ module Peachy
       @node = xml_node if xml_node.kind_of? Peachy::Parsers::ParserWrapper
     end
 
+    def to_s
+      return @xml unless @xml.nil?
+      node.to_s
+    end
+
     # Overloaded so that calls to methods representative of an XML element or
     # attribute can be generated dynamically.
     #
