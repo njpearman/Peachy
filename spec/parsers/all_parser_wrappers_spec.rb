@@ -41,29 +41,3 @@ shared_examples_for "all parser wrappers" do
     @wrapper.to_s.should == @raw_xml
   end
 end
-
-require 'nokogiri'
-
-describe "the Nokogiri parser wrapper class" do
-  before(:each) do
-    @raw_xml = "<root type=\"test\">\n  <child>Name</child>\n</root>"
-    noko = Nokogiri::XML(@raw_xml)
-    @wrapper = Peachy::Parsers::NokogiriWrapper.new((noko/'root')[0])
-    @expected_wrapper_class = Peachy::Parsers::NokogiriWrapper
-  end
-
-  it_should_behave_like "all parser wrappers"
-end
-
-require 'rexml/document'
-
-describe "the REXML parser wrapper class" do
-  before(:each) do
-    @raw_xml = "<root type='test'>\n  <child>Name</child>\n</root>"
-    rexml = REXML::Document.new(@raw_xml)
-    @wrapper = Peachy::Parsers::REXMLWrapper.new rexml.root
-    @expected_wrapper_class = Peachy::Parsers::REXMLWrapper
-  end
-
-  it_should_behave_like "all parser wrappers"
-end
