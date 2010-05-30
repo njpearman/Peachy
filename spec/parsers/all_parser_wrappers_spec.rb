@@ -36,11 +36,18 @@ shared_examples_for "all parser wrappers" do
   it "should indicate that an element has both children and an attribute" do
     @wrapper.has_children_and_attributes?.should be_true
   end
+
+  it "should return a string representation of the XML" do
+    @wrapper.to_s.should == @raw_xml
+  end
 end
+
+require 'nokogiri'
 
 describe "the Nokogiri parser wrapper class" do
   before(:each) do
-    noko = Nokogiri::XML('<root type="test"><child>Name</child></root>')
+    @raw_xml = "<root type=\"test\">\n  <child>Name</child>\n</root>"
+    noko = Nokogiri::XML(@raw_xml)
     @wrapper = Peachy::Parsers::NokogiriWrapper.new((noko/'root')[0])
     @expected_wrapper_class = Peachy::Parsers::NokogiriWrapper
   end
@@ -52,7 +59,8 @@ require 'rexml/document'
 
 describe "the REXML parser wrapper class" do
   before(:each) do
-    rexml = REXML::Document.new('<root type="test"><child>Name</child></root>')
+    @raw_xml = "<root type='test'>\n  <child>Name</child>\n</root>"
+    rexml = REXML::Document.new(@raw_xml)
     @wrapper = Peachy::Parsers::REXMLWrapper.new rexml.root
     @expected_wrapper_class = Peachy::Parsers::REXMLWrapper
   end

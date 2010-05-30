@@ -12,6 +12,10 @@ module Peachy
       def name
         @attribute.first
       end
+
+      def to_s
+        @attribute.last
+      end
     end
   end
 end

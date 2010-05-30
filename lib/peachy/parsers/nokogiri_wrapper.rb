@@ -45,6 +45,10 @@ module Peachy
         @nokogiri.name
       end
 
+      def to_s
+        @nokogiri.to_s
+      end
+
       private
       def xpath xpath
         @nokogiri.xpath(xpath).map{|noko_node| make_from(noko_node) }

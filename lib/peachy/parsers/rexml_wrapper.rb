@@ -37,6 +37,10 @@ module Peachy
       def name
         @rexml.name
       end
+
+      def to_s
+        @rexml.to_s
+      end
     end
   end
 end
