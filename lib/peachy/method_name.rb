@@ -22,13 +22,6 @@ module Peachy
       raise MethodNotInRubyConvention.new(self) unless matches_convention?
     end
 
-    # Checks whether the method name matches the Ruby convention of lowercase with
-    # underscores.  This method does not allow question marks, excalmation marks
-    # or numbers, however.
-    def matches_convention?
-      !(@method_name =~ /^[a-z]+(?:_[a-z]+){0,}$/).nil?
-    end
-
     def to_s
       return @method_name
     end
@@ -40,6 +33,13 @@ module Peachy
     private
     def variation_methods
       Peachy::StringStyler.private_instance_methods
+    end
+
+    # Checks whether the method name matches the Ruby convention of lowercase with
+    # underscores.  This method does not allow question marks, excalmation marks
+    # or numbers, however.
+    def matches_convention?
+      !(@method_name =~ /^[a-z]+(?:_[a-z]+){0,}$/).nil?
     end
   end
 end
