@@ -94,7 +94,7 @@ module Peachy
     private
     def generate_method_for_xml method_name
       method_name.check_for_convention
-      attribute_content = create_attribute method_name
+      attribute_content = create_attribute(method_name)
       return attribute_content unless attribute_content.nil?
       matches = node.find_matches(method_name)
       matches.nil? ? nil : create_method_for_child_or_content(method_name, matches)
