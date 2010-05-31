@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe "how to use Peachy::MethodName" do
   before(:each) do
     @method_name = Peachy::MethodName.new 'method_name'
@@ -45,5 +47,14 @@ describe "how to use Peachy::MethodName" do
     variations.should include('method')
     variations.should include('Method')
   end
-end
 
+  it "should know how to check for convention" do
+    @method_name = Peachy::MethodName.new('method_name')
+    @method_name.matches_convention?.should be_true
+  end
+
+  it "should know when a method name does not match the accepted convention" do
+    method_name = Peachy::MethodName.new('method_Name')
+    method_name.matches_convention?.should be_false
+  end
+end
