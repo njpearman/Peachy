@@ -28,7 +28,8 @@ node name:
     puts 'Contents: ' + proxy.xml.node.value
     -> Contents: Peachy
 
-Either .value or .to_s can be called to get the contents of the current node.
+Call #value on a childless node to get the contents the node, such as the example
+above.
 
 Peachy expects method names to be called in the Ruby convention of lowercase with
 underscores.  It will do it's best to match method names to elements and attributes
@@ -37,15 +38,23 @@ or hyphen-separated-names)
 
 More detailed usage examples can be found in the .rb files in the /test directory.
 
-=== XML parsing
+=== Getting the underlying XML
+It's possible to call #to_s on any node in the tree to get the underlying XML at
+that point in the tree, such as:
 
+    puts 'XML: ' + proxy.xml.node
+    -> <node>Peachy</node>
+
+The exact representation of the XML will depend on the underlying XML parser that 
+is being used, but the XML will be valid and correct.
+
+=== XML parsing
 Peachy tries to determine which XML parser to load when it is first used.  Nokogiri
 is currently the first choice, defaulting to REXML if Nokogiri is not available.
 It's possible to extend this out so let me know if there are any other XML parsers
 that you'd like Peachy to support.
 
 === Elements and Attributes
-
 Currently, elements and attributes are accessed in almost exactly the same way;
 call a method on your current node matching the attribute or element name that
 is required next.  Elements need to have .value or .to_s called on them to get
@@ -63,7 +72,6 @@ Peachy is just for slurping XML, so this convention should make it easy to know
 how to access the property that you're after, be they elements or attributes.
 
 === No method name match
-
 Peachy is currently short-tempered, in that if no element or attribute match is
 found when drilling down through proxies, a NoMatchingXmlPart error will be
 raised.
