@@ -1,6 +1,3 @@
-class NothingToMimic < Exception
-end
-
 module Peachy
   module Mimic
     def mimic
