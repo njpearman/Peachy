@@ -5,12 +5,8 @@ describe "only REXML is available" do
   before(:each) do
     @factory = Peachy::Parsers::ParserFactory.new
     @factory.stubs(:require).with('rexml/document').returns(true)
-    Gem.stubs(:available?).with(/nokogiri/).returns(false)
-  end
-
-  it "should return REXML if no other XML parser is available" do
-    parser = @factory.load_parser
-    parser.should == :rexml
+    Gem.stubs(:available?).with('nokogiri').returns(false)
+    Gem.stubs(:available?).with('rexml/document').returns(true)
   end
 
   it "should load REXML" do
@@ -20,7 +16,7 @@ describe "only REXML is available" do
   end
 
   it "should check whether other XML parsers are available" do
-    expectation = Gem.expects(:available?).with(/nokogiri/).returns(false)
+    expectation = Gem.expects(:available?).with('nokogiri').returns(false)
     @factory.load_parser
     expectation.satisfied?.should be_true
   end
