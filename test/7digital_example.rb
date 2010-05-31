@@ -1,6 +1,4 @@
 #!/usr/bin/ruby
-
-require 'net/http'
 require File.expand_path(File.join(File.dirname(__FILE__), '../lib/peachy'))
 
 xml = <<SEVENDIG
