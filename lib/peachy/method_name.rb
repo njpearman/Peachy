@@ -15,6 +15,13 @@ module Peachy
       end).uniq
     end
 
+    # Checks whether the method name is in the accepted convention, raising a
+    # MethodNotInRubyConvention if it's not.  This check does not allow method
+    # names to have question marks, exclamation marks or numbers, however.
+    def check_for_convention
+      raise MethodNotInRubyConvention.new(self) unless matches_convention?
+    end
+
     # Checks whether the method name matches the Ruby convention of lowercase with
     # underscores.  This method does not allow question marks, excalmation marks
     # or numbers, however.

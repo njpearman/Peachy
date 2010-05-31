@@ -51,10 +51,12 @@ describe "how to use Peachy::MethodName" do
   it "should know how to check for convention" do
     @method_name = Peachy::MethodName.new('method_name')
     @method_name.matches_convention?.should be_true
+    lambda { @method_name.check_for_convention }.should_not raise_error(MethodNotInRubyConvention)
   end
 
   it "should know when a method name does not match the accepted convention" do
     method_name = Peachy::MethodName.new('method_Name')
     method_name.matches_convention?.should be_false
+    lambda { method_name.check_for_convention }.should raise_error(MethodNotInRubyConvention)
   end
 end

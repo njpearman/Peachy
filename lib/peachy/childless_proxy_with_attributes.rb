@@ -8,7 +8,7 @@ module Peachy
 
     private
     def generate_method_for_xml method_name
-      check_for_convention(method_name)
+      method_name.check_for_convention
       create_method_for_attribute(method_name) {|match| no_matching_xml(method_name) if match.nil? }
     end
   end
