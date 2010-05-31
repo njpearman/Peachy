@@ -18,8 +18,8 @@ module Peachy
 
     def morph_into_array to_add_to_array, method_to_invoke, *args, &block
       puts "[Peachy::Proxy] Currently acts as #{@acts_as}" if Peachy.whiny?
-      raise AlreadyAnOnlyChild.new(node_name) if is_an_only_child
-      puts "[Peachy::Proxy] So #{node_name} should be an Array, then." if Peachy.whiny?
+      raise AlreadyAnOnlyChild.new(name) if is_an_only_child
+      puts "[Peachy::Proxy] So #{name} should be an Array, then." if Peachy.whiny?
       mimic [to_add_to_array]
       return send(method_to_invoke, *args, &block)
     end

@@ -6,7 +6,7 @@ module Peachy
     end
 
     # Returns the name of the encapsulated node.
-    def node_name
+    def name
       node.name
     end
 

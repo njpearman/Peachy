@@ -24,7 +24,7 @@ describe "Peachy::SimpleContent wrapper for the contents of a simple XML element
   end
 
   it "should make the name of the parent node available" do
-    @content.node_name.should == 'real_node'
+    @content.name.should == 'real_node'
   end
 
   it "should raise an error if the SimpleContent is treated as an Array after being treated as SimpleContent" do

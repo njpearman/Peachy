@@ -138,7 +138,7 @@ module Peachy
     end
 
     def no_matching_xml method_name
-      raise NoMatchingXmlPart.new(method_name, node_name)
+      raise NoMatchingXmlPart.new(method_name, name)
     end
   end
 end

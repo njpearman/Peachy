@@ -2,9 +2,7 @@ module Peachy
   class SimpleContent
     include MorphIntoArray, MyMetaClass
 
-    define_method(:name) { value }
-    define_method(:node_name) { @xml.name }
-    define_method(:to_s) { @xml.to_s }
+    [:name, :to_s].each {|method| define_method(method) { @xml.send(method) }}
 
     def initialize xml
       @xml = xml
