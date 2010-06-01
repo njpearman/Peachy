@@ -3,6 +3,8 @@ module Peachy
     class NokogiriWrapper < ParserWrapper
       include WithXPath
       
+      [:content, :name, :to_s].each{|method| define_method(method){ @nokogiri.send(method) }}
+
       def initialize nokogiri
         @nokogiri = nokogiri
       end
@@ -35,18 +37,6 @@ module Peachy
 
       def has_attributes?
         @nokogiri.attribute_nodes.size > 0
-      end
-
-      def content
-        @nokogiri.content
-      end
-
-      def name
-        @nokogiri.name
-      end
-
-      def to_s
-        @nokogiri.to_s
       end
 
       private

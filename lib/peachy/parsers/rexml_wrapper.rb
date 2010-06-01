@@ -3,6 +3,8 @@ module Peachy
     class REXMLWrapper < ParserWrapper
       include WithXPath
 
+      [:name, :to_s].each{|method| define_method(method) { @rexml.send(method) }}
+
       def initialize rexml_element
         @rexml = rexml_element
       end
@@ -32,14 +34,6 @@ module Peachy
 
       def content
         @rexml.text
-      end
-
-      def name
-        @rexml.name
-      end
-
-      def to_s
-        @rexml.to_s
       end
     end
   end
