@@ -9,18 +9,11 @@ module Peachy
       Array.instance_methods.include?(method_name.to_s)
     end
 
-    def mimic object_to_mimic
-      eval_on_singleton_class do
-        define_method(:mimic) { object_to_mimic }
-        include Mimic
-      end
-    end
-
     def morph_into_array to_add_to_array, method_to_invoke, *args, &block
       puts "[Peachy::Proxy] Currently acts as #{@acts_as}" if Peachy.whiny?
       raise AlreadyAnOnlyChild.new(name) if is_an_only_child
       puts "[Peachy::Proxy] So #{name} should be an Array, then." if Peachy.whiny?
-      mimic [to_add_to_array]
+      Mimic.make_a_mimic_of [to_add_to_array], self
       return send(method_to_invoke, *args, &block)
     end
 

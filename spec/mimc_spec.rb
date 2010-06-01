@@ -15,7 +15,7 @@ describe "using a Mimic" do
   it "should call the underlying object" do
     to_mimic = "Hello"
     @mimic.instance_eval do
-      (class << self; self; end).instance_eval { define_method(:mimic) { to_mimic } }
+      (class << self; self; end).instance_eval { define_method(:subject) { to_mimic } }
     end
     
     @mimic.chomp('o').should == "Hell"
