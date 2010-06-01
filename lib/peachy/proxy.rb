@@ -4,9 +4,9 @@ module Peachy
     include MorphIntoArray, MyMetaClass, XmlNode
 
     # This hides all public methods on the class except for 'methods', 'nil?'
-    # 'respond_to?' and 'inspect', which I've found are too useful to hide for
-    # the time being.
-    hide_public_methods ['methods', 'nil?', 'respond_to?', 'inspect']
+    # 'respond_to?', 'inspect' and 'instance_eval', which I've found are too
+    # useful / fundamental / dangerous to hide.
+    hide_public_methods ['methods', 'nil?', 'respond_to?', 'inspect', 'instance_eval']
 
     # Takes either a string containing XML or a Nokogiri::XML::Element as the
     # single argument.
