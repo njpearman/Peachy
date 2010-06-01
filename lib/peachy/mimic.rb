@@ -12,9 +12,10 @@ module Peachy
       end
     end
 
-    # This method has been defined as a template.  If you just include Mimic, however,
-    # you will get a NothingToMimic error when calling mimic.  Use Mimic#make_a_mimic_of
-    # to turn an object into a mimic.
+    # This method has been defined as a template.  If you just include Mimic as 
+    # a module on your class you will get a NothingToMimic error when calling #mimic.
+    # 
+    # Use Mimic#make_a_mimic_of to turn an object into a mimic.
     def subject
       raise NothingToMimic.new
     end
