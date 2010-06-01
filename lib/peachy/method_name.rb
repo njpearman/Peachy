@@ -2,6 +2,8 @@ module Peachy
   class MethodName
     include StringStyler
 
+    [:to_s, :to_sym].each {|method| define_method(method) { @method_name.send(method) }}
+    
     def initialize method_name
       @method_name = method_name.to_s
     end
@@ -22,14 +24,6 @@ module Peachy
       raise MethodNotInRubyConvention.new(self) unless matches_convention?
     end
 
-    def to_s
-      return @method_name
-    end
-
-    def to_sym
-      return @method_name.to_sym
-    end
-
     private
     def variation_methods
       Peachy::StringStyler.private_instance_methods
@@ -39,7 +33,7 @@ module Peachy
     # underscores.  This method does not allow question marks, excalmation marks
     # or numbers, however.
     def matches_convention?
-      !(@method_name =~ /^[a-z]+(?:_[a-z]+){0,}$/).nil?
+      @method_name =~ /^[a-z]+(?:_[a-z]+){0,}$/
     end
   end
 end
