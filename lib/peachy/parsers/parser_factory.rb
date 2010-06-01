@@ -1,22 +1,18 @@
 module Peachy
   module Parsers
     class ParserFactory
-      Parsers = 
-        [['nokogiri', lambda {|xml| NokogiriWrapper.new(Nokogiri::XML(xml)) }],
-         ['rexml/document', lambda {|xml| REXMLWrapper.new(REXML::Document.new(xml)) }]]
-      
       def load_parser
-        preferred_parser = get_preferred_parser
+        preferred_parser = Parsers.find {|parser| Gem.available? parser[:gem] }
         self.class.class_eval do
-          define_method(:make_from, preferred_parser.last)
+          define_method(:make_from, preferred_parser[:implementation])
         end
-        require(preferred_parser.first)
+        require(preferred_parser[:gem])
       end
 
       private
-      def get_preferred_parser
-        Parsers.find {|parser| Gem.available? parser.first }
-      end
+      Parsers =
+        [{:gem => 'nokogiri', :implementation => lambda {|xml| NokogiriWrapper.new(Nokogiri::XML(xml)) }},
+         {:gem => 'rexml/document', :implementation => lambda {|xml| REXMLWrapper.new(REXML::Document.new(xml)) }}]
     end
   end
 end
