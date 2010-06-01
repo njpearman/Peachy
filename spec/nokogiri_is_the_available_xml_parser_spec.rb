@@ -7,6 +7,10 @@ describe "nokogiri is the available XML parser" do
     expectation = @factory.stubs(:require).with('nokogiri').returns(true)
   end
 
+  it "should indicate that the parser has been loaded" do
+    @factory.load_parser.should be_true
+  end
+
   it "should check whether Nokogiri is available" do
     expectation = Gem.expects(:available?).with('nokogiri').returns(true)
     parser_type = @factory.load_parser
@@ -23,6 +27,11 @@ describe "nokogiri is the available XML parser" do
     expectation = @factory.expects(:require).with('rexml/document').never.returns(true)
     parser_type = @factory.load_parser
     expectation.satisfied?.should be_true
+  end
+
+  it "should enable a way to a new NokogiriWrapper" do
+    @factory.load_parser
+    @factory.methods.should include('make_from')
   end
 
   it "should create a NokogiriWrapper from xml" do

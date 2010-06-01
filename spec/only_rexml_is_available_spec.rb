@@ -9,6 +9,10 @@ describe "only REXML is available" do
     Gem.stubs(:available?).with('rexml/document').returns(true)
   end
 
+  it "should indicate that the parser has been loaded" do
+    @factory.load_parser.should be_true
+  end
+
   it "should load REXML" do
     expectation = @factory.expects(:require).with('rexml/document').returns(true)
     @factory.load_parser
@@ -25,6 +29,11 @@ describe "only REXML is available" do
     expectation = @factory.expects(:require).with('nokogiri').never.returns(false)
     @factory.load_parser
     expectation.satisfied?.should be_true
+  end
+
+  it "should enable a way to a new REXMLWrapper" do
+    @factory.load_parser
+    @factory.methods.should include('make_from')
   end
 
   it "should create a REXMLWrapper from xml" do
