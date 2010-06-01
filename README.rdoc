@@ -28,8 +28,8 @@ node name:
     puts 'Contents: ' + proxy.xml.node.value
     -> Contents: Peachy
 
-Call #value on a childless node to get the contents the node, such as the example
-above.
+Call #value on a childless node to get the contents of the node, such as the
+example above.
 
 Peachy expects method names to be called in the Ruby convention of lowercase with
 underscores.  It will do it's best to match method names to elements and attributes
