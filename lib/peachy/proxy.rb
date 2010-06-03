@@ -94,51 +94,73 @@ module Peachy
     private
     def generate_method_for_xml method_name
       method_name.check_for_convention
-      attribute_content = create_attribute(method_name)
+      current_call = CurrentMethodCall.new(self, method_name)
+      attribute_content = current_call.create_attribute
       return attribute_content unless attribute_content.nil?
-      matches = node.find_matches(method_name)
-      matches.nil? ? nil : create_method_for_child_or_content(method_name, matches)
+      matches = current_call.find_matches
+      matches.nil? ? nil : current_call.create_method_for_child_or_content(matches)
     end
 
-    def create_method_for_child_or_content method_name, matches
-      return create_from_element_list(method_name, matches) if matches.size > 1
-      child = ProxyFactory.create_from_element(matches[0])
-      define_child(method_name, child)
-    end
-
-    def create_attribute method_name
-      create_method_for_attribute(method_name) if node.has_children_and_attributes?
-    end
-
-    def create_method_for_attribute method_name
-      match = node.find_match_by_attributes(method_name)
-      yield match if block_given?
-      define_child(method_name, match.content) unless match.nil?
-    end
-
-    def create_from_element_list method_name, matches
-      define_method(method_name) { return matches_to_array(matches) }
-    end
-
-    def matches_to_array matches
-      matches.inject([]) {|array, child| array << ProxyFactory.create_from_element(child) }
-    end
-
-    def define_child method_name, child
-      define_method(method_name) { return child }
-    end
-
-    def define_method method_name, &block
-      eval_on_singleton_class { define_method(method_name.to_sym, &block) }
-      yield
-    end
-    
     def variables_are_nil?
       @xml.nil? and @node.nil?
     end
 
     def no_matching_xml method_name
       raise NoMatchingXmlPart.new(method_name, name)
+    end
+
+    class CurrentMethodCall
+      extend MethodMask
+      include MyMetaClass, XmlNode
+      
+      def initialize proxy, method
+        @method_name = method
+        @proxy = proxy
+      end
+      
+      def create_method_for_child_or_content matches
+        return define_child_array(matches) if matches.size > 1
+        child = ProxyFactory.create_from_element(matches[0])
+        define_child_as(child)
+      end
+
+      def create_attribute
+        create_method_for_attribute if @proxy.node.has_children_and_attributes?
+      end
+
+      def create_method_for_attribute
+        match = find_match_by_attributes
+        yield match if block_given?
+        define_child_as(match.content) unless match.nil?
+      end
+
+      def find_matches
+        @proxy.node.find_matches(@method_name)
+      end
+
+      def find_match_by_attributes
+        @proxy.node.find_match_by_attributes(@method_name)
+      end
+
+      def define_child_array matches
+        define_child(@method_name) { return CurrentMethodCall.matches_to_array(matches) }
+      end
+
+      def define_child_as child
+        define_child(method_name) { return child }
+      end
+
+      def define_child method_name, &block
+        @proxy.eval_on_singleton_class { define_method(method_name.to_sym, &block) }
+        yield
+      end
+
+      private
+      attr_reader :method_name
+
+      def self.matches_to_array matches
+        matches.inject([]) {|array, child| array << ProxyFactory.create_from_element(child) }
+      end
     end
   end
 end

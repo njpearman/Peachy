@@ -1,5 +1,5 @@
 module Peachy
-  class ChildlessProxyWithAttributes < Proxy
+  module ChildlessProxyWithAttributes
     # Returns the text content of the XML node encapsulated by this instance.
     def value
       acts_as_only_child
@@ -9,7 +9,7 @@ module Peachy
     private
     def generate_method_for_xml method_name
       method_name.check_for_convention
-      create_method_for_attribute(method_name) {|match| no_matching_xml(method_name) if match.nil? }
+      Peachy::Proxy::CurrentMethodCall.new(self, method_name).create_method_for_attribute {|match| no_matching_xml(method_name) if match.nil? }
     end
   end
 end

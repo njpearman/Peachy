@@ -16,7 +16,13 @@ module Peachy
       end
 
       def create_proxy_with_attributes match
-        ChildlessProxyWithAttributes.new(match)
+        childless_proxy_with_attributes = Proxy.new(match)
+        childless_proxy_with_attributes.instance_eval do
+          (class << self; self; end).instance_eval do
+            include ChildlessProxyWithAttributes
+          end
+        end
+        return childless_proxy_with_attributes
       end
     end
   end
