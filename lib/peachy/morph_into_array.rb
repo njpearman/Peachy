@@ -11,7 +11,7 @@ module Peachy
 
     def morph_into_array to_add_to_array, method_to_invoke, *args, &block
       puts "[Peachy::Proxy] Currently acts as #{@acts_as}" if Peachy.whiny?
-      raise AlreadyAnOnlyChild.new(name) if is_an_only_child
+      raise AlreadyAnOnlyChild.new(name) if is_an_only_child?
       puts "[Peachy::Proxy] So #{name} should be an Array, then." if Peachy.whiny?
       Mimic.make_a_mimic_of [to_add_to_array], self
       return send(method_to_invoke, *args, &block)
@@ -21,7 +21,7 @@ module Peachy
       @acts_as = :only_child
     end
 
-    def is_an_only_child
+    def is_an_only_child?
        @acts_as == :only_child
     end
   end
