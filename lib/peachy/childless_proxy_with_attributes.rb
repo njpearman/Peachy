@@ -11,7 +11,9 @@ module Peachy
     # when the underlying element is a childless element that has attributes.
     def generate_method_for_xml method_name
       method_name.check_for_convention
-      Peachy::Proxy::CurrentMethodCall.new(self, method_name).create_method_for_attribute {|match| no_matching_xml(method_name) if match.nil? }
+      CurrentMethodCall.new(self, method_name).create_method_for_attribute do |match|
+        no_matching_xml(method_name) if match.nil?
+      end
     end
   end
 end
