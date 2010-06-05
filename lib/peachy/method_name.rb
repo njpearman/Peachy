@@ -17,6 +17,10 @@ module Peachy
       end).uniq
     end
 
+    def as_xpath
+      variations.map {|variation| "./#{variation}" } * '|'
+    end
+
     # Checks whether the method name is in the accepted convention, raising a
     # MethodNotInRubyConvention if it's not.  This check does not allow method
     # names to have question marks, exclamation marks or numbers, however.

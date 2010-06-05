@@ -40,7 +40,7 @@ describe "only REXML is available" do
     @factory.load_parser
     wrapper = @factory.make_from '<thing>Stuff</thing>'
     wrapper.should be_a(Peachy::Parsers::REXMLWrapper)
-    wrapper.has_children?.should be_true
+    wrapper.name.should == ''
   end
 end
 

@@ -84,7 +84,7 @@ module Peachy
         child_proxy
       elsif array_can?(method_name)
         # morph into an array, as method is a zero-length array call
-        new_proxy = ProxyFactory.create_from_element(node)
+        new_proxy = node.create_from_element
         morph_into_array(new_proxy, method_name)
       else
         no_matching_xml(method_name)
@@ -120,7 +120,7 @@ module Peachy
       
       def create_method_for_child_or_content matches
         return define_child_array(matches) if matches.size > 1
-        child = ProxyFactory.create_from_element(matches[0])
+        child = matches[0].create_from_element
         define_child_as(child)
       end
 
@@ -159,7 +159,7 @@ module Peachy
       attr_reader :method_name
 
       def self.matches_to_array matches
-        matches.inject([]) {|array, child| array << ProxyFactory.create_from_element(child) }
+        matches.inject([]) {|array, child| array << child.create_from_element }
       end
     end
   end

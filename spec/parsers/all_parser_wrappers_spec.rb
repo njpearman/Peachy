@@ -25,14 +25,6 @@ shared_examples_for "all parser wrappers" do
     matches.should be_nil
   end
 
-  it "should indicate that an element has children" do
-    @wrapper.has_children?.should be_true
-  end
-
-  it "should indicate that an element has an attributes" do
-    @wrapper.has_attributes?.should be_true
-  end
-
   it "should indicate that an element has both children and an attribute" do
     @wrapper.has_children_and_attributes?.should be_true
   end

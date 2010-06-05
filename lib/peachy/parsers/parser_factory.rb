@@ -11,16 +11,24 @@ module Peachy
       #   * REXML
       def load_parser
         preferred_parser = Parsers.find {|parser| Gem.available? parser[:gem] }
-        self.class.class_eval do
-          define_method(:make_from, preferred_parser[:implementation])
-        end
-        require(preferred_parser[:gem])
+        preferred_parser = DefaultParser if preferred_parser.nil?
+        set_the_parser preferred_parser
       end
 
       private
+      def set_the_parser preferred_parser
+        self.class.class_eval { define_method(:make_from, preferred_parser[:implementation]) }
+        require(preferred_parser[:gem])
+      end
+
       Parsers =
-        [{:gem => 'nokogiri', :implementation => lambda {|xml| NokogiriWrapper.new(Nokogiri::XML(xml)) }},
-         {:gem => 'rexml/document', :implementation => lambda {|xml| REXMLWrapper.new(REXML::Document.new(xml)) }}]
+        [{:gem => 'nokogiri', :implementation => lambda {|xml| NokogiriWrapper.new(Nokogiri::XML(xml)) }}]
+      
+      DefaultParser =
+        {
+          :gem => 'rexml/document',
+          :implementation => lambda {|xml| REXMLWrapper.new(REXML::Document.new(xml)) }
+        }
     end
   end
 end

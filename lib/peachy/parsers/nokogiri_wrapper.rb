@@ -1,8 +1,6 @@
 module Peachy
   module Parsers
     class NokogiriWrapper < ParserWrapper
-      include WithXPath
-      
       [:content, :name, :to_s].each{|method| define_method(method){ @nokogiri.send(method) }}
 
       def initialize nokogiri
@@ -13,7 +11,7 @@ module Peachy
       # returning nil if no element or attribute matching the method name is found
       # in the children of the current location in the DOM.
       def find_matches method_name
-        matches = xpath(xpath_for(method_name))
+        matches = xpath(method_name.as_xpath)
         matches.any? ? matches : nil
       end
 
@@ -28,6 +26,7 @@ module Peachy
         has_children? and has_attributes?
       end
 
+      private
       # Determines whether the given element contains any child elements or not.
       # The choice of implementation is based on performance tests between using
       # XPath and a Ruby iterator.
@@ -39,7 +38,6 @@ module Peachy
         @nokogiri.attribute_nodes.size > 0
       end
 
-      private
       def xpath xpath
         @nokogiri.xpath(xpath).map{|noko_node| make_from(noko_node) }
       end

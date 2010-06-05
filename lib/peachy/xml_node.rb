@@ -10,7 +10,7 @@ module Peachy
 
     private
     def clone
-      ProxyFactory.create_from_element(node)
+      node.create_from_element
     end
 
     # Returns the name of the encapsulated node.
