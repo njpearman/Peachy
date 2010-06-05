@@ -1,3 +1,10 @@
+== 0.3.3
+* Minor improvements
+  * Added some more documentation to methods.
+  * Removed whiny-ness from specs.
+  * Improvements to structure of internals, introducing some new classes.
+  * Added some guard clauses on specs that are impacted when Nokogiri is not installed.
+
 == 0.3.2
 * Minor improvements
   * Better support for Ruby 1.8.6

@@ -26,7 +26,7 @@ Once you have a Proxy, it's straightforward to drill down through the XML by
 node name:
 
     puts 'Contents: ' + proxy.xml.node.value
-    -> Contents: Peachy
+    => Contents: Peachy
 
 Call #value on a childless node to get the contents of the node, such as the
 example above.
@@ -43,7 +43,7 @@ It's possible to call #to_s on any node in the tree to get the underlying XML at
 that point in the tree, such as:
 
     puts 'XML: ' + proxy.xml.node
-    -> <node>Peachy</node>
+    => <node>Peachy</node>
 
 The exact representation of the XML will depend on the underlying XML parser that 
 is being used, but the XML will be valid and correct.
