@@ -1,12 +1,12 @@
 = Peachy
 
-Peachy dynamically slurps XML from an underlying XML DOM, creating ruby methods 
+Peachy dynamically slurps XML from an underlying XML DOM, creating Ruby methods
 on the fly to match the elements and attributes of the XML.
 
 Source available at http://github.com/njpearman/Peachy
 
 == Install
-The Peachy Ruby gem is available as you would expect.  Run:
+The Peachy gem is available as you would expect.  Run:
 
     gem install peachy
 
@@ -32,7 +32,7 @@ Call #value on a childless node to get the contents of the node, such as the
 example above.
 
 Peachy expects method names to be called in the Ruby convention of lowercase with
-underscores.  It will do it's best to match method names to elements and attributes
+underscores.  It will do its best to match method names to elements and attributes
 following different conventions (currently, this is camelCaseNames, PascalCaseNames
 or hyphen-separated-names)
 
@@ -42,8 +42,8 @@ More detailed usage examples can be found in the .rb files in the /test director
 It's possible to call #to_s on any node in the tree to get the underlying XML at
 that point in the tree, such as:
 
-    puts 'XML: ' + proxy.xml.node
-    => <node>Peachy</node>
+    puts 'XML: ' + proxy.xml.node.to_s
+    => XML: <node>Peachy</node>
 
 The exact representation of the XML will depend on the underlying XML parser that 
 is being used, but the XML will be valid and correct.
@@ -51,14 +51,18 @@ is being used, but the XML will be valid and correct.
 === XML parsing
 Peachy tries to determine which XML parser to load when it is first used.  Nokogiri
 is currently the first choice, defaulting to REXML if Nokogiri is not available.
-It's possible to extend this out so let me know if there are any other XML parsers
-that you'd like Peachy to support.
+Peachy requires the appropriate XML parser gem at runtime and, as such, I haven't
+included Nokogiri as a dependency in the gemspec.  It will use Nokogiri when it's
+available; otherwise REXML will be loaded and used at runtime.
+
+It is possible to extend out the parser support, for example Hpricot or LibXML,
+so let me know if there are any other XML parsers that you'd like Peachy to support.
 
 === Elements and Attributes
 Currently, elements and attributes are accessed in almost exactly the same way;
 call a method on your current node matching the attribute or element name that
-is required next.  Elements need to have .value or .to_s called on them to get
-the contents of the element, however.
+is required next.  Elements need to have #value called on them to get the contents
+of the element, however.
 
 E.g.
 
