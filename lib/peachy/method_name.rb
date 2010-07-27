@@ -12,9 +12,7 @@ module Peachy
     # The valid varations are the underlying method name, plus all variations
     # provided by methods defined in the StringStyler module.
     def variations
-      (variation_methods.inject([@method_name]) do |array, method|
-        array << send(method)
-      end).uniq
+      variation_methods.inject([@method_name]) {|array, method| array << send(method)}.uniq
     end
 
     def as_xpath
