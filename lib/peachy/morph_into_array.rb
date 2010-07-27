@@ -1,8 +1,8 @@
 module Peachy
   module MorphIntoArray
     private
-    def you_use_me_like_an_array method_name, block_given, *args
-      return ((block_given or args.size > 0) and array_can?(method_name))
+    def used_as_array method_name, block_given, *args
+      return (block_given or args.size > 0) && array_can?(method_name)
     end
 
     def array_can? method_name

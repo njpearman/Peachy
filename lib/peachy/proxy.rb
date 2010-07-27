@@ -68,9 +68,7 @@ module Peachy
     #
     def method_missing method_name, *args, &block
       # check whether an Array method is called with arguments or a block
-      if you_use_me_like_an_array(method_name, block_given?, *args)
-        return morph_into_array(clone, method_name, *args, &block)
-      end
+      return morph_into_array(clone, method_name, *args, &block) if used_as_array(method_name, block_given?, *args)
 
       # standard method_missing for any other call with arguments or a block
       super if args.any? or block_given?
@@ -79,11 +77,11 @@ module Peachy
       child_proxy = generate_method_for_xml(MethodName.new(method_name))
 
       if !child_proxy.nil?
-        # found a match, so flag as only child
+        # found a match, so mark as only child
         acts_as_only_child
         child_proxy
       elsif array_can?(method_name)
-        # morph into an array, as method is a zero-length array call
+        # morph into an array, as method is a length one array call
         new_proxy = node.create_from_element
         morph_into_array(new_proxy, method_name)
       else

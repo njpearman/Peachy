@@ -14,11 +14,13 @@ module Peachy
     end
 
     def method_missing method_name, *args, &block
-      if you_use_me_like_an_array(method_name, block_given?, *args)
-        new_content = SimpleContent.new(@xml)
-        return morph_into_array(new_content, method_name, *args, &block)
-      end
+      return morph_with_content(method_name, *args, &block) if used_as_array(method_name, block_given?, *args)
       super
+    end
+
+    private
+    def morph_with_content method_name, *args, &block
+      return morph_into_array(SimpleContent.new(@xml), method_name, *args, &block)
     end
   end
 end
