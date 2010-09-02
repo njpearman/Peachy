@@ -3,9 +3,8 @@ describe "using Peachy::Proxy incorrectly" do
     @proxy = Peachy::Proxy.new '<testnode>Check meh.</testnode>'
   end
 
-  it 'should raise a well written error if the method does not map to anything in the underlying XML node' do
-    root_name = Gem.available?('nokogiri') ? 'document' : ''
-    lambda { @proxy.missing }.should raise_error(NoMatchingXmlPart, "missing is not contained as a child of the node #{root_name}.")
+  it 'should return nil if the method does not map to anything in the underlying XML node' do
+    @proxy.missing.nil?.should == true
   end
 
   it "should raise an error if the method name is not in Ruby convention" do
