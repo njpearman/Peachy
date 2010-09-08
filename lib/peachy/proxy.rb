@@ -104,7 +104,8 @@ module Peachy
     end
 
     def no_matching_xml method_name
-      raise NoMatchingXmlPart.new(method_name, name)
+      raise NoMatchingXmlPart.new(method_name, name) unless Peachy.being_quiet?
+      return nil
     end
   end
 end

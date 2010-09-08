@@ -76,6 +76,8 @@ Peachy is just for slurping XML, so this convention should make it easy to know
 how to access the property that you're after, be they elements or attributes.
 
 === No method name match
-Peachy is currently short-tempered, in that if no element or attribute match is
-found when drilling down through proxies, a NoMatchingXmlPart error will be
-raised.
+By default, Peachy will raise a NoMatchingXmlPart error if a method call does not
+match a child node of the current location.  It's possible to globally switch of
+this behaviour and return nil when no child node is found.  This might be
+desirable if you cannot be certain of the XML that you are trying to interpret
+until runtime.
