@@ -18,7 +18,7 @@ describe "attributes on a parent node" do
     @proxy.root.test_node.methods.should include('name')
   end
 
-  it "should return nil if the attirbute does not exist" do
-    @proxy.root.test_node.other.nil?.should == true
+  it "should raise an error if the attirbute does not exist" do
+    lambda { @proxy.root.test_node.other }.should raise_error(NoMatchingXmlPart)
   end
 end
