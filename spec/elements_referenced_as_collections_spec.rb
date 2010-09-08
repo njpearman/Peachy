@@ -5,7 +5,7 @@ describe "an element referenced as the first part of a collection" do
     xml = <<XML
 <xml>
   <list>
-    <item id="1">
+    <item id="1" type="thingy">
       <child>one</child>
     </item>
   </list>
@@ -52,5 +52,13 @@ MSG
     @proxy.xml.list.item.child
     lambda { @proxy.xml.list.item[0] }.should raise_error(AlreadyAnOnlyChild, expected_message)
   end
-end
 
+  it "should not treat Array#type as an array reference" do
+    expected_message = <<MSG
+The 'item' node has already been accessed as a single child, but you are now trying to use it as a collection.
+Do not try to access Peachy::Proxies in a mixed manner in your implementation.
+MSG
+    @proxy.xml.list.item.type
+    lambda { @proxy.xml.list.item[0] }.should raise_error(AlreadyAnOnlyChild, expected_message)
+  end
+end
