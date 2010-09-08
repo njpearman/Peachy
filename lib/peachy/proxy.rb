@@ -6,7 +6,7 @@ module Peachy
     # This hides all public methods on the class except for 'methods', 'nil?'
     # 'respond_to?', 'inspect' and 'instance_eval', which I've found are too
     # useful / fundamental / dangerous to hide.
-    hide_public_methods ['methods', 'nil?', 'respond_to?', 'inspect', 'instance_eval']
+    hide_public_methods ['methods', 'nil?', 'respond_to?', 'inspect', 'instance_eval', 'kind_of?', 'send']
 
     # Takes either a string containing XML or a Nokogiri::XML::Element as the
     # single argument.
@@ -107,5 +107,6 @@ module Peachy
       raise NoMatchingXmlPart.new(method_name, name) unless Peachy.being_quiet?
       return nil
     end
-  end
+
+	end
 end
