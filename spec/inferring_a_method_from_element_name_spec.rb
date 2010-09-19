@@ -47,6 +47,9 @@ describe "inferring a method from an element name" do
     @proxy.methods.should include('respond_to?')
     @proxy.methods.should include('to_s')
     @proxy.methods.should include('instance_eval')
+    @proxy.methods.should include('kind_of?')
+    @proxy.methods.should include('send')
+    @proxy.methods.should include('is_a?')
     @proxy.methods.should_not include('id')
   end
 end
