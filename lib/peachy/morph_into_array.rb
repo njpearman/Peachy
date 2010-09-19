@@ -6,7 +6,7 @@ module Peachy
     end
 
     def array_can? method_name
-      Array.instance_methods.include?(method_name.to_s) && method_name != :type
+      (Array.instance_methods - Object.instance_methods).include?( version_safe_method_id(method_name))
     end
 
     def morph_into_array to_add_to_array, method_to_invoke, *args, &block

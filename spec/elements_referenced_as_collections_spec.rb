@@ -44,6 +44,15 @@ XML
     @proxy.xml.list.item.size.should == 1
   end
 
+  it "should not consider inherited Object instance methods to be an Array method" do
+    expected_message = <<MSG
+The 'item' node has already been accessed as a single child, but you are now trying to use it as a collection.
+Do not try to access Peachy::Proxies in a mixed manner in your implementation.
+MSG
+    @proxy.xml.list.item.type
+    lambda { @proxy.xml.list.item[0] }.should raise_error(AlreadyAnOnlyChild, expected_message)
+  end
+
   it "should raise an error if the element has already been accessed as a single child" do
     expected_message = <<MSG
 The 'item' node has already been accessed as a single child, but you are now trying to use it as a collection.
@@ -53,12 +62,4 @@ MSG
     lambda { @proxy.xml.list.item[0] }.should raise_error(AlreadyAnOnlyChild, expected_message)
   end
 
-  it "should not treat Array#type as an array reference" do
-    expected_message = <<MSG
-The 'item' node has already been accessed as a single child, but you are now trying to use it as a collection.
-Do not try to access Peachy::Proxies in a mixed manner in your implementation.
-MSG
-    @proxy.xml.list.item.type
-    lambda { @proxy.xml.list.item[0] }.should raise_error(AlreadyAnOnlyChild, expected_message)
-  end
 end
