@@ -51,11 +51,12 @@ module Peachy
     @whine = true
   end
 
-  # Indactes whether Peachy will #whine when it runs or not.
+  # Indicates whether Peachy will #whine when it runs or not.
   def self.whiny?
     return @whine
   end
 
+  # Creates a new proxy from the XML string passed to it.
   def self.proxy xml
     create_factory unless defined? @factory
     return Proxy.new(@factory.make_from(xml))

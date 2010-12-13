@@ -81,3 +81,8 @@ match a child node of the current location.  It's possible to globally switch of
 this behaviour and return nil when no child node is found.  This might be
 desirable if you cannot be certain of the XML that you are trying to interpret
 until runtime.
+
+Toggle between silent and noisy messages in Peachy using:
+
+    Peachy.be_quiet
+    Peachy.be_loud
