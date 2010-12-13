@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'rexml/document'
-require File.join(File.dirname(__FILE__), 'all_parser_wrappers_spec')
 
 describe "the REXML parser wrapper class" do
   before(:each) do
@@ -10,5 +9,5 @@ describe "the REXML parser wrapper class" do
     @expected_wrapper_class = Peachy::Parsers::REXMLWrapper
   end
 
-  it_should_behave_like "all parser wrappers"
+  it_should_behave_like 'all parser wrappers in Peachy'
 end

@@ -15,18 +15,18 @@ describe "inferring a method from an element name" do
   end
 
   it "should not expose the original method_missing alias publically" do
-    @proxy.methods.include?('original_method_missing').should be_false
+    @proxy.methods.map{|m| m.to_s}.include?('original_method_missing').should be_false
   end
 
   it 'should add a reader for the method to the underlying class if the method does map to underlying XML node' do
     @proxy.testnode
-    @proxy.methods.include?('testnode').should be_true
+    @proxy.methods.map{|m| m.to_s}.include?('testnode').should be_true
   end
 
   it 'should define the method on an instance, not on the class' do
     @proxy.testnode
-    @proxy.methods.should include('testnode')
-    @another_proxy.methods.should_not include('testnode')
+    @proxy.methods.map{|m| m.to_s}.should include('testnode')
+    @another_proxy.methods.map{|m| m.to_s}.should_not include('testnode')
   end
 
   it "should return the node contents when the node isn't defined as a method and the contents of the node is at the lowest point of the tree" do
@@ -41,15 +41,16 @@ describe "inferring a method from an element name" do
   end
 
   it "should only contain the expected public and protected methods" do
-    @proxy.methods.should include('inspect')
-    @proxy.methods.should include('methods')
-    @proxy.methods.should include('nil?')
-    @proxy.methods.should include('respond_to?')
-    @proxy.methods.should include('to_s')
-    @proxy.methods.should include('instance_eval')
-    @proxy.methods.should include('kind_of?')
-    @proxy.methods.should include('send')
-    @proxy.methods.should include('is_a?')
-    @proxy.methods.should_not include('id')
+    all_methods = @proxy.methods.map{|m| m.to_s}
+    all_methods.should include('inspect')
+    all_methods.should include('methods')
+    all_methods.should include('nil?')
+    all_methods.should include('respond_to?')
+    all_methods.should include('to_s')
+    all_methods.should include('instance_eval')
+    all_methods.should include('kind_of?')
+    all_methods.should include('send')
+    all_methods.should include('is_a?')
+    all_methods.should_not include('id')
   end
 end

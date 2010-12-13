@@ -17,7 +17,7 @@ XML
 
   it "should define a method for the element name" do
     @proxy.test_node
-    @proxy.methods.should include('test_node')
+    @proxy.methods.map{|m| m.to_s}.should include('test_node')
   end
 
   it "should match a method to an attribute by pascal case" do
@@ -26,12 +26,12 @@ XML
 
   it "should define a method from pascal cased attribute name" do
     @proxy.test_node.second_child.record_label
-    @proxy.test_node.second_child.methods.should include('record_label')
+    @proxy.test_node.second_child.methods.map{|m| m.to_s}.should include('record_label')
   end
 
   it "should define a method on a parent with attributes" do
     @proxy.test_node.third_child.record_label.should == 'Rough Trade'
-    @proxy.test_node.third_child.methods.should include('record_label')
+    @proxy.test_node.third_child.methods.map{|m| m.to_s}.should include('record_label')
   end
 
   it "should allow child nodes to be selected after an attrbiute is selected on a parent node" do

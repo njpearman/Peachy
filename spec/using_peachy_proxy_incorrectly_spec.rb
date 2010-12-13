@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe "using Peachy::Proxy incorrectly" do
   before(:each) do
     @proxy = Peachy::Proxy.new '<testnode>Check meh.</testnode>'

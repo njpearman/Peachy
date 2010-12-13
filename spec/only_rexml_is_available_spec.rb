@@ -33,7 +33,7 @@ describe "only REXML is available" do
 
   it "should enable a way to a new REXMLWrapper" do
     @factory.load_parser
-    @factory.methods.should include('make_from')
+    @factory.methods.map{|m| m.to_s}.should include('make_from')
   end
 
   it "should create a REXMLWrapper from xml" do

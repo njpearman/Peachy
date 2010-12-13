@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe "a simple element referenced as the first part of a collection" do
   before(:each) do
     xml = <<XML

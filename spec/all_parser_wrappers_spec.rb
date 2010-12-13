@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-shared_examples_for "all parser wrappers" do
+shared_examples_for 'all parser wrappers in Peachy' do
   it "should be able to find the correct matches in the underlying XML" do
     matches = @wrapper.find_matches(Peachy::MethodName.new('child'))
     matches.size.should == 1

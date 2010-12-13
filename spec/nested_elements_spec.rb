@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'ruby-debug'
 
 describe "nested elements should be handled corectly by Peachy" do
   before(:each) do
@@ -12,8 +11,8 @@ describe "nested elements should be handled corectly by Peachy" do
 
   it "should define methods for the ancestors" do
     @proxy.root.first.second
-    @proxy.root.methods.should include('first')
-    @proxy.root.first.methods.should include('second')
+    @proxy.root.methods.map{|m| m.to_s}.should include('first')
+    @proxy.root.first.methods.map{|m| m.to_s}.should include('second')
   end
 end
 
