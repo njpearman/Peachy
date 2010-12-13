@@ -1,9 +1,7 @@
-if RUBY_VERSION < "1.9"
-  def version_safe_method_id(method_name)
-    method_name.to_s
-  end
-else
-  def version_safe_method_id(method_name)
-    method_name.to_sym
+module Peachy
+  module Compatibility
+    def version_safe_method_id(method)
+      RUBY_VERSION < '1.9' ? method.to_s : method.to_sym
+    end
   end
 end
