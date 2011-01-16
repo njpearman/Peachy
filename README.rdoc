@@ -58,6 +58,11 @@ available; otherwise REXML will be loaded and used at runtime.
 It is possible to extend out the parser support, for example Hpricot or LibXML,
 so let me know if there are any other XML parsers that you'd like Peachy to support.
 
+A quick note about Nokogiri and XML namespaces: when Nokogiri creates a new XML node,
+it currently strips all namespaces from the document.  This simplification of the
+underlying XML is necessary so that the interface that Peachy presents to the user is
+still straightforward even when namespaces are set within the XML.
+
 === Elements and Attributes
 Currently, elements and attributes are accessed in almost exactly the same way;
 call a method on your current node matching the attribute or element name that
@@ -74,6 +79,19 @@ E.g.
 
 Peachy is just for slurping XML, so this convention should make it easy to know
 how to access the property that you're after, be they elements or attributes.
+
+=== Collections
+Peachy allows collections to be traversed as arrays in the following way:
+    proxy = Peachy::Proxy.new('<peachy><node>One</node><node>Two</node><node>Three</node></peachy>')
+    puts "First node: " + proxy.peachy.node[0].value
+    => First node: One
+    puts "Second node: " + proxy.peachy.node[1].value
+    => Second node: Two
+
+Note that a child of a Peachy Proxy can be either an array, or another proxy, and never 
+both.  The intent is that a consumer of some XML would expect something to be a single child
+all of the time, or a collection all of the time.  It doesn't make sense to treat a particular
+node as a singleton in some circumstances and a collection containing one element in others.
 
 === No method name match
 By default, Peachy will raise a NoMatchingXmlPart error if a method call does not
