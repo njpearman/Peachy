@@ -23,7 +23,8 @@ module Peachy
       end
 
       Parsers =
-        [{:gem => 'nokogiri', :implementation => lambda {|xml| NokogiriWrapper.new(Nokogiri::XML(xml)) }}]
+        [{:gem => 'nokogiri', 
+          :implementation => lambda {|xml| NokogiriWrapper.new(Nokogiri::XML(xml).remove_namespaces!)}}]
       
       DefaultParser =
         {
