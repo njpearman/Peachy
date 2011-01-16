@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'all_parser_wrappers_group'
 
 # this is to ignore this spec if the nokogiri gem is not available
 if Gem.available? 'nokogiri'

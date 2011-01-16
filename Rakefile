@@ -1,14 +1,11 @@
-# 
-# 
- 
-
 require 'rubygems'
 require 'rake'
 require 'rake/clean'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
 require 'rake/testtask'
-require 'spec/rake/spectask'
+require 'rspec'
+require 'rspec/core/rake_task'
 
 spec = Gem::Specification.new do |s|
   s.name = 'Peachy'
@@ -44,6 +41,6 @@ Rake::TestTask.new do |t|
   t.test_files = FileList['test/**/*.rb']
 end
 
-Spec::Rake::SpecTask.new do |t|
-  t.spec_files = FileList['spec/**/*.rb']
+RSpec::Core::RakeTask.new do |t|
+  t.pattern = 'spec/**/*_spec.rb'
 end
