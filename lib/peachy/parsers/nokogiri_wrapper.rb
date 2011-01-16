@@ -11,9 +11,7 @@ module Peachy
       # returning nil if no element or attribute matching the method name is found
       # in the children of the current location in the DOM.
       def find_matches method_name
-        namespace = method_name.to_s.match(/^(\w*)_/).captures.first if method_name.to_s =~ /_/
-        matches = xpath(method_name.as_xpath, namespace => 'http://njpearman.com/peachy/any') if namespace
-        matches = xpath(method_name.as_xpath) unless namespace
+        matches = xpath method_name.as_xpath 
         matches.any? ? matches : nil
       end
 
@@ -40,8 +38,8 @@ module Peachy
         @nokogiri.attribute_nodes.size > 0
       end
 
-      def xpath xpath, namespace={}
-        @nokogiri.xpath(xpath, namespace).map{|noko_node| make_from(noko_node) }
+      def xpath xpath
+        @nokogiri.xpath(xpath).map{|noko_node| make_from(noko_node) }
       end
 
       def make_from child
