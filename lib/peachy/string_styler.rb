@@ -25,6 +25,10 @@ module Peachy
       @method_name.gsub(/_/, '-')
     end
 
+    def as_period_separated
+      @method_name.gsub(/_/, '.')
+    end
+
     def as_underscore
       @method_name
     end

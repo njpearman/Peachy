@@ -33,8 +33,8 @@ example above.
 
 Peachy expects method names to be called in the Ruby convention of lowercase with
 underscores.  It will do its best to match method names to elements and attributes
-following different conventions (currently, this is camelCaseNames, PascalCaseNames
-or hyphen-separated-names)
+following different conventions.  Currently, this is camelCaseNames, PascalCaseNames,
+hyphen-separated-names and period.separated.names.
 
 More detailed usage examples can be found in the .rb files in the /test directory.
 

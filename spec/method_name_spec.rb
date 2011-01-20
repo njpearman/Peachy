@@ -14,13 +14,14 @@ describe "Peachy::MethodName" do
   end
 
   it "should return the expected number of variations in format" do
-    @method_name.variations.size.should == 4
+    @method_name.variations.size.should == 5
   end
 
   it "should return the expected variation formats" do
     variations = @method_name.variations
 
     variations.should include('method_name')
+    variations.should include('method.name')
     variations.should include('methodName')
     variations.should include('method-name')
     variations.should include('MethodName')
@@ -34,6 +35,7 @@ describe "Peachy::MethodName" do
     @method_name.to_sym.should == :this_method
     
     variations.should include('this_method')
+    variations.should include('this.method')
     variations.should include('thisMethod')
     variations.should include('this-method')
     variations.should include('ThisMethod')

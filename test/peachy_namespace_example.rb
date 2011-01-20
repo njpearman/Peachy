@@ -38,3 +38,6 @@ proxy = Peachy::Proxy.new xml
 
 puts "Status okay? #{proxy.root.status == 'ok'}"
 proxy.root.toptags.tag.each {|tag| puts "Found tag '#{tag.name.value}' at #{tag.position}" }
+
+proxy = Peachy::Proxy.new(File.open('test/peachy_large_namespace_example.xml').read)
+puts "Where I want to be: " + proxy.feed.entry[0].group.content[0].url
