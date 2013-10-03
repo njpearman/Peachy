@@ -10,7 +10,7 @@ module Peachy
       #   * Nokogiri
       #   * REXML
       def load_parser
-        preferred_parser = Parsers.find {|parser| Gem.available? parser[:gem] }
+        preferred_parser = Parsers.find {|parser| Gem.find_by_name? parser[:gem] }
         preferred_parser = DefaultParser if preferred_parser.nil?
         puts "Loading #{preferred_parser[:gem]} as the XML parser to use" if Peachy.whiny?
         set_the_parser preferred_parser
